@@ -46,6 +46,7 @@ model Experiences {
   currentlyWorking Boolean   @default(false)
   description      String?
   multimedia       Json // URLs de contenido multimedia
+  deletedAt        DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 

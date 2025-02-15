@@ -8,7 +8,7 @@ const Error = ({ message = "Lo sentimos, ha ocurrido un error" }: Props) => {
   return (
     <div className="flex flex-col w-full justify-start items-center p-3">
       <Image
-        src="https://storage.googleapis.com/ccb-public/wep-pages/mxyckneuuussj0itoxon.png"
+        src="https://res.cloudinary.com/ddmeptk5c/image/upload/f_auto,q_auto/v1/portfolio/zuvtlwc26x7pj15k8lzo"
         width={100}
         height={50}
         className="w-auto h-auto"
