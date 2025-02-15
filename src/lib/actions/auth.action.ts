@@ -34,7 +34,7 @@ export async function signIn(
 
   const res = await nextSignIn("credentials", {
     ...data,
-    callbackUrl: "/",
+    callbackUrl: "/system",
   });
 
   console.log({
