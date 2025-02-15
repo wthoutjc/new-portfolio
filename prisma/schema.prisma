@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,13 +7,81 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id        String    @id @default(uuid()) @db.Char(36)
-  email     String    @unique
-  password  String
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+model User {
+  id          String       @id @default(uuid()) @db.Char(36)
+  email       String       @unique
+  password    String
+  profile     Profile?
+  experiences Experience[]
+  deletedAt   DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@index([email], map: "email_users_idx")
+}
+
+model Profile {
+  id         String   @id @default(uuid()) @db.Char(36)
+  userId     String   @unique @db.Char(36)
+  headline   String?
+  location   String?
+  multimedia Json // URLs de contenido multimedia
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user          User           @relation(fields: [userId], references: [id])
+  profileSkills ProfileSkill[]
+}
+
+model Experience {
+  id               String    @id @default(uuid()) @db.Char(36)
+  userId           String    @db.Char(36)
+  title            String
+  employmentType   String?
+  company          String
+  location         String?
+  locationType     String?
+  startDate        DateTime
+  endDate          DateTime?
+  currentlyWorking Boolean   @default(false)
+  description      String?
+  multimedia       Json // URLs de contenido multimedia
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User              @relation(fields: [userId], references: [id])
+  experienceSkills ExperienceSkill[]
+}
+
+model Skill {
+  id          String    @id @default(uuid()) @db.Char(36)
+  name        String    @unique
+  icon        String?
+  description String?
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  profileSkills    ProfileSkill[]
+  experienceSkills ExperienceSkill[]
+}
+
+model ProfileSkill {
+  profileId String @db.Char(36)
+  skillId   String @db.Char(36)
+
+  profile Profile @relation(fields: [profileId], references: [id])
+  skill   Skill   @relation(fields: [skillId], references: [id])
+
+  @@id([profileId, skillId])
+}
+
+model ExperienceSkill {
+  experienceId String @db.Char(36)
+  skillId      String @db.Char(36)
+
+  experience Experience @relation(fields: [experienceId], references: [id])
+  skill      Skill      @relation(fields: [skillId], references: [id])
+
+  @@id([experienceId, skillId])
 }
