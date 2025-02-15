@@ -19,10 +19,14 @@ export const options: NextAuthConfig = {
       return isAuth;
     },
     async jwt({ token, user }: { token: any; user: any }) {
-      if (user) token.email = (user as User).email;
+      if (user) {
+        token.email = (user as User).email;
+        token.id = (user as User).id;
+      }
       return token;
     },
-    async session({ session }: { session: any; token: any }) {
+    async session({ session, token }: { session: any; token: any }) {
+      if (token) session.user = token;
       return session;
     },
   },

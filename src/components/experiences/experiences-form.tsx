@@ -1,4 +1,8 @@
 "use client";
+import { useActionState } from "react";
+
+// Auth
+import { useSession } from "next-auth/react";
 
 // Components
 import {
@@ -28,10 +32,11 @@ import {
 import { Textarea } from "../ui/textarea";
 import { Checkbox } from "../ui/checkbox";
 import { AppCalendar } from "@/components/ui/app-calendar/app-calendar";
-import { Button } from "../ui/button";
+import { SubmitButton } from "../ui/submit-button/submit-button";
 
 // Interfaces
 import { Skill } from "@/modules/skills/interfaces/skills";
+import { Experience } from "@/lib/interfaces/experience";
 import { Crud } from "@/lib/enums/crud.enum";
 
 // Hooks
@@ -48,18 +53,8 @@ import {
   LocationType,
 } from "@/modules/experiences/enums/experiences.enum";
 
-// Services
-import { ExperiencesService } from "@/modules/experiences/services/experiences.service";
-
-// Repositories
-import { ExperiencesRepository } from "@/modules/experiences/repositories/experiences.repository";
-
-// Database
-import { db } from "@/common/database/database";
-
-// Zustand
-import { useUIStore } from "@/zustand/store";
-import { Experience } from "@/lib/interfaces/experience";
+// Actions
+import { ExperiencesAction } from "@/lib/actions/experiences.action";
 
 interface Props {
   skills: Skill[];
@@ -67,10 +62,18 @@ interface Props {
 }
 
 const ExperiencesForm = ({ experience }: Props) => {
+  const experiencesAction = new ExperiencesAction();
+
+  const { data: session } = useSession();
+  const user = session?.user;
+
   const mode = experience ? Crud.UPDATE : Crud.CREATE;
   const { id, ...rest } = experience || {};
 
-  const { user } = useUIStore();
+  const [state, formAction] = useActionState(
+    mode === Crud.CREATE ? experiencesAction.create : experiencesAction.update,
+    undefined
+  );
 
   const defaultValues: Partial<z.infer<typeof experiencesSchema>> = {
     title: "",
@@ -90,14 +93,19 @@ const ExperiencesForm = ({ experience }: Props) => {
 
   const currentlyWorking = form.watch("currentlyWorking");
 
-  const onSubmit = (data: z.infer<typeof experiencesSchema>) => {
-    const experiencesService = new ExperiencesService(
-      new ExperiencesRepository(db)
+  const onSubmit = form.handleSubmit((data) => {
+    if (!user) return;
+
+    const formData = new FormData();
+    formData.append("id", id ?? "");
+    formData.append("userId", user.id ?? "");
+
+    Object.entries(data).forEach(([key, value]) =>
+      formData.append(key, value.toString())
     );
 
-    if (mode === Crud.CREATE) experiencesService.create(data, user.id);
-    else experiencesService.update(id!, data);
-  };
+    formAction(formData);
+  });
 
   return (
     <Card className="m-3 mt-1 p-3 pt-1">
@@ -105,18 +113,15 @@ const ExperiencesForm = ({ experience }: Props) => {
         {mode === Crud.CREATE && (
           <CardTitle>Registrar una experiencia</CardTitle>
         )}
-
         {mode === Crud.UPDATE && (
           <CardTitle>Actualizar una experiencia</CardTitle>
         )}
-
         {mode === Crud.CREATE && (
           <CardDescription>
             Por favor, complete el siguiente formulario para crear una
             experiencia.
           </CardDescription>
         )}
-
         {mode === Crud.UPDATE && (
           <CardDescription>
             A continuación, se muestra la información de la experiencia
@@ -127,7 +132,7 @@ const ExperiencesForm = ({ experience }: Props) => {
 
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <form onSubmit={onSubmit} className="space-y-3">
             <div className="flex w-full space-x-2">
               {/* Experiences.title */}
               <FormField
@@ -139,7 +144,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                       Cargo <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} />
+                      <Input type="text" {...field} disabled={!!state} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -157,6 +162,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        disabled={!!state}
                       >
                         <FormItem>
                           <FormControl>
@@ -191,7 +197,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                       Empresa <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} />
+                      <Input type="text" {...field} disabled={!!state} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -209,6 +215,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                         id="currentlyWorking"
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        disabled={!!state}
                       />
                     </FormControl>
 
@@ -230,7 +237,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                   <FormItem className="w-full">
                     <FormLabel>Ubicación</FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} />
+                      <Input type="text" {...field} disabled={!!state} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -248,6 +255,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        disabled={!!state}
                       >
                         <FormItem>
                           <FormControl>
@@ -284,6 +292,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                     <AppCalendar
                       selected={field.value || new Date()}
                       onSelect={field.onChange}
+                      disabled={!!state}
                     />
                     <FormMessage />
                   </FormItem>
@@ -303,6 +312,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                       <AppCalendar
                         selected={field.value || new Date()}
                         onSelect={field.onChange}
+                        disabled={!!state}
                       />
                       <FormMessage />
                     </FormItem>
@@ -319,7 +329,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                 <FormItem className="w-full">
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <Textarea {...field} disabled={!!state} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -327,9 +337,8 @@ const ExperiencesForm = ({ experience }: Props) => {
             />
 
             <div className="flex justify-start">
-              <Button size={"lg"} type="submit">
-                Guardar
-              </Button>
+              {/* disabled={!!state} */}
+              <SubmitButton text="Guardar" />
             </div>
           </form>
         </Form>

@@ -4,7 +4,11 @@ import { CreateExperienceDto } from "@/modules/experiences/dto/create-experience
 import { UpdateExperienceDto } from "@/modules/experiences/dto/update-experience.dto";
 
 class ExperiencesService {
-  constructor(private readonly experiencesRepository: ExperiencesRepository) {}
+  private readonly experiencesRepository: ExperiencesRepository;
+
+  constructor() {
+    this.experiencesRepository = new ExperiencesRepository();
+  }
 
   findAll(findAllDto: FindAllDto) {
     return this.experiencesRepository.findAll(findAllDto);

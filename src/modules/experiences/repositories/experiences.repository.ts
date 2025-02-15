@@ -5,7 +5,9 @@ import { CreateExperienceDto } from "@/modules/experiences/dto/create-experience
 import { UpdateExperienceDto } from "@/modules/experiences/dto/update-experience.dto";
 
 class ExperiencesRepository {
-  constructor(private readonly dbService: typeof db) {
+  private readonly dbService: typeof db;
+
+  constructor() {
     this.dbService = db;
   }
 

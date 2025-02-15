@@ -19,11 +19,6 @@ export default {
         if (validatedFields.success) {
           const { username, password } = validatedFields.data;
 
-          console.log({
-            username,
-            password,
-          });
-
           const user = await db.users.findUnique({
             where: { email: username },
             select: {

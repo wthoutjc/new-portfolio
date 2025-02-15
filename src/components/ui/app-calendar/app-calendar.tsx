@@ -17,9 +17,10 @@ import { Label } from "@/components/ui/label";
 interface Props {
   selected: Date | undefined;
   onSelect: (date: Date | undefined) => void;
+  disabled?: boolean;
 }
 
-export function AppCalendar({ selected, onSelect }: Props) {
+export function AppCalendar({ selected, onSelect, disabled }: Props) {
   const [date, setDate] = React.useState<Date | undefined>(
     selected || new Date()
   );
@@ -70,6 +71,7 @@ export function AppCalendar({ selected, onSelect }: Props) {
             onSelect(newMonth);
           }}
           className="rounded-md border shadow"
+          disabled={disabled}
         />
       </div>
       <div className="flex flex-col gap-2 w-2/3">
