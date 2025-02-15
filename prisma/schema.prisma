@@ -44,7 +44,7 @@ model Experiences {
   startDate        DateTime
   endDate          DateTime?
   currentlyWorking Boolean   @default(false)
-  description      String?
+  description      String?   @db.LongText
   multimedia       Json // URLs de contenido multimedia
   deletedAt        DateTime?
   createdAt        DateTime  @default(now())

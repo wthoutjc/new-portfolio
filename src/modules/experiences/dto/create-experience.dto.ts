@@ -5,13 +5,9 @@ export class CreateExperienceDto {
   location!: string;
   locationType!: string;
   startDate!: Date;
-  endDate!: Date;
+  endDate?: Date;
   currentlyWorking!: boolean;
-  description!: string;
-  multimedia!: string[];
-  experienceSkills!: string[];
-}
-
-export class ConnectExperienceSkillDto {
-  skillId!: string;
+  description?: string;
+  multimedia?: string[];
+  experienceSkills?: string[];
 }

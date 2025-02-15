@@ -56,9 +56,10 @@ class ExperiencesRepository {
   create(createExperienceDto: CreateExperienceDto, userId: string) {
     const data: Prisma.ExperiencesCreateInput = {
       ...createExperienceDto,
+      multimedia: createExperienceDto.multimedia ?? Prisma.JsonNull,
       user: { connect: { id: userId } },
       experienceSkills: {
-        create: createExperienceDto.experienceSkills.map((skillId) => ({
+        create: (createExperienceDto.experienceSkills ?? []).map((skillId) => ({
           skill: { connect: { id: skillId } },
         })),
       },
