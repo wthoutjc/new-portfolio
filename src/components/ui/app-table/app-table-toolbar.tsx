@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Interfaces
 import { AppTableToolbarProps } from "@/lib/interfaces/table";
@@ -15,14 +17,17 @@ import { Button } from "../button";
 // Icons
 import { ICONS, LABEL_ICONS } from "@/lib/constants/actions.constant";
 import { PermissionStates } from "@/lib/enums/permissions.enum";
+import { Plus } from "lucide-react";
 
 const AppTableToolbar = ({
   numSelected,
   title,
   selected,
 }: AppTableToolbarProps) => {
+  const pathname = usePathname();
+
   return (
-    <div className="flex justify-between items-center bg-red-600 p-3">
+    <div className="flex justify-between items-center p-3 bg-primary">
       {numSelected > 0 ? (
         <p className="text-white text-sm">
           {numSelected > 1 ? `${numSelected} seleccionados` : "1 seleccionado"}
@@ -62,6 +67,13 @@ const AppTableToolbar = ({
               </TooltipProvider>
             ))}
         </div>
+
+        <Link href={`${pathname}/create`}>
+          <Button size="sm" variant="outline" className="ml-3 self-end">
+            <Plus size={16} />
+            Crear
+          </Button>
+        </Link>
       </div>
     </div>
   );

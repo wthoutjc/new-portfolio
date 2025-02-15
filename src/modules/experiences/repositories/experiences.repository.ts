@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { db } from "@/common/database/database";
 import { FindAllDto } from "@/modules/common/dto/find-all.dto";
-import { CreateExperienceDto } from "@/modules/common/dto/create-experience.dto";
-import { UpdateExperienceDto } from "@/modules/common/dto/update-experience.dto";
+import { CreateExperienceDto } from "@/modules/experiences/dto/create-experience.dto";
+import { UpdateExperienceDto } from "@/modules/experiences/dto/update-experience.dto";
 
 class ExperiencesRepository {
   constructor(private readonly dbService: typeof db) {

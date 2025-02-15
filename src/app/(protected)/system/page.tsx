@@ -10,17 +10,19 @@ const EXPERIENCE_DICT = {
 };
 
 interface Props {
-  searchParams?: {
+  searchParams?: Promise<{
     search?: string;
     page?: string;
     rowsPerPage?: string;
-  };
+  }>;
 }
 
 export default async function SystemPage({ searchParams }: Props) {
-  const search = searchParams?.search || "";
-  const page = Number(searchParams?.page || 1);
-  const rowsPerPage = Number(searchParams?.rowsPerPage || 20);
+  const sp = (await searchParams) || {};
+
+  const search = sp.search || "";
+  const page = Number(sp.page || 1);
+  const rowsPerPage = Number(sp.rowsPerPage || 20);
 
   const { data, total } = await new ExperiencesService(
     new ExperiencesRepository(db)

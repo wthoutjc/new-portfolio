@@ -39,7 +39,7 @@ const ProtectedLayoutPage = async ({
             <AppBreadcrumb />
           </header>
 
-          <div className="p-3">{children}</div>
+          {children}
         </SidebarInset>
       </SidebarProvider>
     </AuthProvider>
