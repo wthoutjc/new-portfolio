@@ -17,6 +17,7 @@ import { User } from "@/lib/interfaces/auth";
 import { AppSidebarSkeleton } from "./app-sidebar-skeleton";
 import { NavUser } from "./nav-user";
 import { NavUserSkeleton } from "./nav-user-skeleton";
+import { ModeToggle } from "../toggle-theme/toggle-theme";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const [loading, setLoading] = useState(false);
@@ -51,7 +52,8 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         <NavMain />
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="flex flex-row items-center justify-between">
+        <ModeToggle />
         {session && session.user && status === "authenticated" && (
           <NavUser user={session.user as User} />
         )}

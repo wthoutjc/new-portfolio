@@ -1,5 +1,6 @@
-import { Prisma } from "@prisma/client";
+"use server";
 import { db } from "@/common/database/database";
+import { Prisma } from "@prisma/client";
 import { FindAllDto } from "@/modules/common/dto/find-all.dto";
 import { CreateExperienceDto } from "@/modules/experiences/dto/create-experience.dto";
 import { UpdateExperienceDto } from "@/modules/experiences/dto/update-experience.dto";
@@ -25,8 +26,14 @@ class ExperiencesRepository {
     return this.dbService.$transaction(async (tx) => {
       const data = await tx.experiences.findMany({
         where,
-        include: {
-          experienceSkills: true,
+        select: {
+          id: true,
+          title: true,
+          company: true,
+          location: true,
+          locationType: true,
+          startDate: true,
+          endDate: true,
         },
         skip: (page - 1) * take,
         take,

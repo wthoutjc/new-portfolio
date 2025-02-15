@@ -1,12 +1,14 @@
-import { db } from "@/common/database/database";
 import { AppTable } from "@/components/ui/app-table/app-table";
 import { AppTableProps } from "@/lib/interfaces/table";
-import { ExperiencesRepository } from "@/modules/experiences/repositories/experiences.repository";
 import { ExperiencesService } from "@/modules/experiences/services/experiences.service";
 
 const EXPERIENCE_DICT = {
-  id: "title",
-  label: "Título",
+  title: "Cargo",
+  company: "Empresa",
+  location: "Ubicación",
+  locationType: "Tipo de ubicación",
+  startDate: "Fecha de inicio",
+  endDate: "Fecha de fin",
 };
 
 interface Props {
@@ -17,6 +19,8 @@ interface Props {
   }>;
 }
 
+const experiencesService = new ExperiencesService();
+
 export default async function SystemPage({ searchParams }: Props) {
   const sp = (await searchParams) || {};
 
@@ -24,12 +28,15 @@ export default async function SystemPage({ searchParams }: Props) {
   const page = Number(sp.page || 1);
   const rowsPerPage = Number(sp.rowsPerPage || 20);
 
-  const { data, total } = await new ExperiencesService(
-    new ExperiencesRepository(db)
-  ).findAll({
+  const { data, total } = await experiencesService.findAll({
     contains: search,
     page,
     take: rowsPerPage,
+  });
+
+  console.log({
+    data,
+    total,
   });
 
   const dataTable: AppTableProps<(typeof data)[0]> = {

@@ -40,10 +40,6 @@ export function NavUser({ user }: Props) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarFallback className="rounded-lg">JC</AvatarFallback>
-              </Avatar>
-
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <div className="flex justify-between items-center">
                   <span className="truncate font-semibold">Juan Camilo</span>
@@ -71,15 +67,6 @@ export function NavUser({ user }: Props) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* TODO: Refactorizar cuenta por modo noche y día */}
-            {/* <DropdownMenuGroup>
-              <Link href={`/account`}>
-                <DropdownMenuItem>
-                  <BadgeCheck />
-                  Cuenta
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuGroup> */}
             <DropdownMenuSeparator />
             <Link href={`/auth/logout`}>
               <DropdownMenuItem>

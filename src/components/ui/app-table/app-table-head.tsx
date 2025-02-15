@@ -15,7 +15,7 @@ const AppTableHead = ({
   readonly,
 }: AppTableHeadProps) => {
   return (
-    <TableHeader>
+    <TableHeader className="bg-primary">
       <TableRow>
         <TableHead>
           <Checkbox

@@ -1,3 +1,4 @@
+"use server";
 import { ExperiencesRepository } from "../repositories/experiences.repository";
 import { FindAllDto } from "@/modules/common/dto/find-all.dto";
 import { CreateExperienceDto } from "@/modules/experiences/dto/create-experience.dto";

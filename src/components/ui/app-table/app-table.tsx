@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import dayjs from "dayjs";
 
 // Components
 import {
@@ -156,7 +157,20 @@ const AppTable = ({
 
                 {keys.slice(1).map((key) => (
                   <TableCell key={key}>
-                    {(row as Record<string, any>)[key]}
+                    {(() => {
+                      const cellValue = (row as Record<string, any>)[key];
+                      if (cellValue == null) return "-";
+                      if (cellValue instanceof Date) {
+                        return dayjs(cellValue).format("DD-MM-YYYY HH:mm");
+                      }
+                      if (
+                        typeof cellValue === "string" &&
+                        !isNaN(Date.parse(cellValue))
+                      ) {
+                        return dayjs(cellValue).format("DD-MM-YYYY HH:mm");
+                      }
+                      return cellValue.toString();
+                    })()}
                   </TableCell>
                 ))}
               </TableRow>

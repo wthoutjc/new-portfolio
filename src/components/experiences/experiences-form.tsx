@@ -1,5 +1,5 @@
 "use client";
-import { useActionState } from "react";
+import { startTransition, useActionState } from "react";
 
 // Auth
 import { useSession } from "next-auth/react";
@@ -54,7 +54,7 @@ import {
 } from "@/modules/experiences/enums/experiences.enum";
 
 // Actions
-import { ExperiencesAction } from "@/lib/actions/experiences.action";
+import { create, update } from "@/lib/actions/experiences.action";
 
 interface Props {
   skills: Skill[];
@@ -62,8 +62,6 @@ interface Props {
 }
 
 const ExperiencesForm = ({ experience }: Props) => {
-  const experiencesAction = new ExperiencesAction();
-
   const { data: session } = useSession();
   const user = session?.user;
 
@@ -71,7 +69,7 @@ const ExperiencesForm = ({ experience }: Props) => {
   const { id, ...rest } = experience || {};
 
   const [state, formAction] = useActionState(
-    mode === Crud.CREATE ? experiencesAction.create : experiencesAction.update,
+    mode === Crud.CREATE ? create : update,
     undefined
   );
 
@@ -81,7 +79,6 @@ const ExperiencesForm = ({ experience }: Props) => {
     location: "",
     description: "",
     startDate: new Date(),
-    endDate: new Date(),
     currentlyWorking: false,
     ...rest,
   };
@@ -101,11 +98,15 @@ const ExperiencesForm = ({ experience }: Props) => {
     formData.append("userId", user.id ?? "");
 
     Object.entries(data).forEach(([key, value]) =>
-      formData.append(key, value.toString())
+      formData.append(key, value?.toString() ?? "")
     );
 
-    formAction(formData);
+    startTransition(() => {
+      formAction(formData);
+    });
   });
+
+  console.log("state", state);
 
   return (
     <Card className="m-3 mt-1 p-3 pt-1">
@@ -157,7 +158,9 @@ const ExperiencesForm = ({ experience }: Props) => {
                 name="employmentType"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Tipo de empleo</FormLabel>
+                    <FormLabel>
+                      Tipo de empleo <span className="text-red-500">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
@@ -186,7 +189,7 @@ const ExperiencesForm = ({ experience }: Props) => {
               />
             </div>
 
-            <div className="flex md:flex-col flex-row w-full space-y-2">
+            <div className="flex md:flex-col flex-row w-full">
               {/* Experiences.company  */}
               <FormField
                 control={form.control}
@@ -209,10 +212,11 @@ const ExperiencesForm = ({ experience }: Props) => {
                 control={form.control}
                 name="currentlyWorking"
                 render={({ field }) => (
-                  <FormItem className="w-full flex items-center gap-2">
+                  <FormItem className="w-full mt-2">
                     <FormControl>
                       <Checkbox
                         id="currentlyWorking"
+                        className="mr-2"
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         disabled={!!state}
