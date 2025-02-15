@@ -20,7 +20,12 @@ class ExperiencesRepository {
     };
 
     if (contains) {
-      where.title = { contains };
+      where.OR = [
+        { title: { contains } },
+        { company: { contains } },
+        { location: { contains } },
+        { locationType: { contains } },
+      ];
     }
 
     return this.dbService.$transaction(async (tx) => {
@@ -37,6 +42,9 @@ class ExperiencesRepository {
         },
         skip: (page - 1) * take,
         take,
+        orderBy: {
+          startDate: "desc",
+        },
       });
 
       const total = await tx.experiences.count({

@@ -21,9 +21,7 @@ interface Props {
 }
 
 export function AppCalendar({ selected, onSelect, disabled }: Props) {
-  const [date, setDate] = React.useState<Date | undefined>(
-    selected || new Date()
-  );
+  const [date, setDate] = React.useState<Date | undefined>(selected);
   const [year, setYear] = React.useState<number>(new Date().getFullYear());
   const [month, setMonth] = React.useState<number>(new Date().getMonth());
   const [hour, setHour] = React.useState<string>("00");

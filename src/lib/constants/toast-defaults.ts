@@ -12,3 +12,10 @@ export const TOAST_SUCCESS_STYLE = {
     color: "#065F46",
   },
 };
+
+export const TOAST_WARNING_STYLE = {
+  style: {
+    background: "#FACC15",
+    color: "#92400E",
+  },
+};

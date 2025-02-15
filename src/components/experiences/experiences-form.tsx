@@ -1,5 +1,6 @@
 "use client";
 import { startTransition, useActionState } from "react";
+import { useRouter } from "next/navigation";
 
 // Auth
 import { useSession } from "next-auth/react";
@@ -55,6 +56,13 @@ import {
 
 // Actions
 import { create, update } from "@/lib/actions/experiences.action";
+import {
+  TOAST_ERROR_STYLE,
+  TOAST_SUCCESS_STYLE,
+} from "@/lib/constants/toast-defaults";
+
+// Sonner
+import { toast } from "sonner";
 
 interface Props {
   skills: Skill[];
@@ -62,6 +70,7 @@ interface Props {
 }
 
 const ExperiencesForm = ({ experience }: Props) => {
+  const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user;
 
@@ -101,12 +110,23 @@ const ExperiencesForm = ({ experience }: Props) => {
       formData.append(key, value?.toString() ?? "")
     );
 
-    startTransition(() => {
-      formAction(formData);
-    });
+    try {
+      startTransition(() => {
+        formAction(formData);
+      });
+
+      toast.success(
+        "Experiencia registrada correctamente",
+        TOAST_SUCCESS_STYLE
+      );
+    } catch (error) {
+      toast.error(JSON.stringify(error), TOAST_ERROR_STYLE);
+    } finally {
+      router.push("/system");
+    }
   });
 
-  console.log("state", state);
+  console.log(form.formState.errors);
 
   return (
     <Card className="m-3 mt-1 p-3 pt-1">
@@ -294,7 +314,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                       Fecha de Inicio <span className="text-red-500">*</span>
                     </FormLabel>
                     <AppCalendar
-                      selected={field.value || new Date()}
+                      selected={field.value}
                       onSelect={field.onChange}
                       disabled={!!state}
                     />
@@ -314,7 +334,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                         Fecha de Fin <span className="text-red-500">*</span>
                       </FormLabel>
                       <AppCalendar
-                        selected={field.value || new Date()}
+                        selected={field.value}
                         onSelect={field.onChange}
                         disabled={!!state}
                       />

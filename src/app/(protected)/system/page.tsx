@@ -21,6 +21,10 @@ interface Props {
 
 const experiencesService = new ExperiencesService();
 
+// Fuerza que la página se renderice de forma dinámica sin caché
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export default async function SystemPage({ searchParams }: Props) {
   const sp = (await searchParams) || {};
 
@@ -32,11 +36,6 @@ export default async function SystemPage({ searchParams }: Props) {
     contains: search,
     page,
     take: rowsPerPage,
-  });
-
-  console.log({
-    data,
-    total,
   });
 
   const dataTable: AppTableProps<(typeof data)[0]> = {

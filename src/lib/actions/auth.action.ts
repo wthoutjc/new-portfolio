@@ -1,4 +1,4 @@
-import { FormState } from "../interfaces/auth";
+import { FormState } from "../enums/form-state.enum";
 import { AuthSchema } from "../schemas/auth.schema";
 
 // NextAuth
@@ -8,25 +8,12 @@ export async function signIn(
   _: FormState,
   formData: FormData
 ): Promise<FormState> {
-  console.log({
-    username: formData.get("username"),
-    password: formData.get("password"),
-  });
-
   const { success, data, error } = AuthSchema.safeParse({
     username: formData.get("username"),
     password: formData.get("password"),
   });
 
-  console.log({
-    success,
-  });
-
   if (!success) {
-    console.log({
-      error,
-    });
-
     return {
       errors: error.flatten().fieldErrors,
     };
@@ -35,10 +22,6 @@ export async function signIn(
   const res = await nextSignIn("credentials", {
     ...data,
     callbackUrl: "/system",
-  });
-
-  console.log({
-    res,
   });
 
   if (res && res.error) {
