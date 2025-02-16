@@ -41,7 +41,10 @@ import {
 } from "@/lib/actions/skill.action";
 import { toast } from "sonner";
 import { Skill } from "@/lib/interfaces/skill";
-import { TOAST_ERROR_STYLE } from "@/lib/constants/toast-defaults";
+import {
+  TOAST_ERROR_STYLE,
+  TOAST_SUCCESS_STYLE,
+} from "@/lib/constants/toast-defaults";
 import { ActionState } from "@/lib/types/action.type";
 
 interface Props {
@@ -125,7 +128,8 @@ const SkillsForm = ({ skill }: Props) => {
             : mode === Crud.CREATE
             ? "registrada"
             : "actualizada"
-        } correctamente`
+        } correctamente`,
+        TOAST_SUCCESS_STYLE
       );
       router.push("/system/skills");
     }

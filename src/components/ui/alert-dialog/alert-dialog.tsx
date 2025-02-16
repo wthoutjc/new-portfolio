@@ -26,7 +26,7 @@ const AlertDialog = () => {
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription className="whitespace-pre-line text-left">
+          <DialogDescription className="whitespace-pre-line text-left text-primary">
             {description}
           </DialogDescription>
         </DialogHeader>

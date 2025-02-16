@@ -46,7 +46,10 @@ import {
 } from "@/lib/actions/user-skill.action";
 import { toast } from "sonner";
 import { UserSkill } from "@/lib/interfaces/skill";
-import { TOAST_ERROR_STYLE } from "@/lib/constants/toast-defaults";
+import {
+  TOAST_ERROR_STYLE,
+  TOAST_SUCCESS_STYLE,
+} from "@/lib/constants/toast-defaults";
 import { ActionState } from "@/lib/types/action.type";
 import { Skill } from "@/modules/skills/interfaces/skills";
 import { SkillSource } from "@/lib/enums/skill.enum";
@@ -167,7 +170,8 @@ const UserSkillsForm = ({
             : mode === Crud.CREATE
             ? "registrada"
             : "actualizada"
-        } correctamente`
+        } correctamente`,
+        TOAST_SUCCESS_STYLE
       );
       router.push("/system/skills");
     }
