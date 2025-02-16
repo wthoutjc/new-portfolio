@@ -1,5 +1,6 @@
 import { AppNavbar } from "@/components/ui/app-navbar/app-navbar";
 import { SideMe } from "@/components/ui/side-me/side-me";
+import { AppFooter } from "@/components/ui/app-footer/app-footer";
 
 export default function PublicLayout({
   children,
@@ -20,6 +21,7 @@ export default function PublicLayout({
           </div>
         </div>
       </div>
+      <AppFooter />
     </div>
   );
 }
