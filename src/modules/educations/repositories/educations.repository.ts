@@ -29,6 +29,14 @@ class EducationsRepository {
     return this.dbService.$transaction(async (tx) => {
       const data = await tx.educations.findMany({
         where,
+        select: {
+          id: true,
+          title: true,
+          institution: true,
+          educationType: true,
+          startDate: true,
+          endDate: true,
+        },
         skip: (page - 1) * take,
         take,
         orderBy: {

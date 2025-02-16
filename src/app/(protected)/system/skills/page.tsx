@@ -37,7 +37,7 @@ export default async function SystemSkillsPage({ searchParams }: Props) {
   });
 
   const dataTable: AppTableProps<(typeof data)[0]> = {
-    caption: "Experiencias",
+    caption: "Habilidades",
     data,
     count: total,
     header: SKILL_DICT,

@@ -25,6 +25,10 @@ class SkillsRepository {
     return this.dbService.$transaction(async (tx) => {
       const data = await tx.skills.findMany({
         where,
+        select: {
+          id: true,
+          name: true,
+        },
         skip: (page - 1) * take,
         take,
       });
