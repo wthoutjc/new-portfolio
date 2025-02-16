@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { Montserrat, Montserrat_Alternates } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/themes/theme-provider";
+import { DynamicThemeProvider } from "@/components/themes/dynamic-theme-provider";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -31,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${montserratAlternates.variable} antialiased`}
       >
-        <ThemeProvider
+        <DynamicThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
@@ -39,7 +39,7 @@ export default function RootLayout({
         >
           {children}
           <Toaster />
-        </ThemeProvider>
+        </DynamicThemeProvider>
       </body>
     </html>
   );

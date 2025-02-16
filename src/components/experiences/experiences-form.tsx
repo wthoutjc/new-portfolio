@@ -1,5 +1,5 @@
 "use client";
-import { startTransition, useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 // Auth
@@ -64,6 +64,9 @@ import {
 // Sonner
 import { toast } from "sonner";
 
+// Types
+import { ActionState } from "@/lib/types/action.type";
+
 interface Props {
   skills: Skill[];
   experience?: Experience;
@@ -77,8 +80,8 @@ const ExperiencesForm = ({ experience }: Props) => {
   const mode = experience ? Crud.UPDATE : Crud.CREATE;
   const { id, ...rest } = experience || {};
 
-  const [state, formAction] = useActionState(
-    mode === Crud.CREATE ? create : update,
+  const [state, formAction] = useActionState<ActionState<Experience>, FormData>(
+    mode === Crud.CREATE ? create<Experience> : update<Experience>,
     undefined
   );
 
@@ -110,44 +113,45 @@ const ExperiencesForm = ({ experience }: Props) => {
       formData.append(key, value?.toString() ?? "")
     );
 
-    try {
-      startTransition(() => {
-        formAction(formData);
-      });
+    formAction(formData);
+    return;
+  });
 
+  useEffect(() => {
+    const { data, errors } = state || {};
+
+    if (errors) toast.error(JSON.stringify(errors), TOAST_ERROR_STYLE);
+
+    if (data) {
       toast.success(
         "Experiencia registrada correctamente",
         TOAST_SUCCESS_STYLE
       );
-    } catch (error) {
-      toast.error(JSON.stringify(error), TOAST_ERROR_STYLE);
-    } finally {
-      router.push("/system");
+      return router.push("/system");
     }
-  });
-
-  console.log(form.formState.errors);
+  }, [state, router]);
 
   return (
     <Card className="m-3 mt-1 p-3 pt-1">
       <CardHeader>
         {mode === Crud.CREATE && (
-          <CardTitle>Registrar una experiencia</CardTitle>
+          <>
+            <CardTitle>Registrar una experiencia</CardTitle>
+            <CardDescription>
+              Por favor, complete el siguiente formulario para crear una
+              experiencia.
+            </CardDescription>
+          </>
         )}
+
         {mode === Crud.UPDATE && (
-          <CardTitle>Actualizar una experiencia</CardTitle>
-        )}
-        {mode === Crud.CREATE && (
-          <CardDescription>
-            Por favor, complete el siguiente formulario para crear una
-            experiencia.
-          </CardDescription>
-        )}
-        {mode === Crud.UPDATE && (
-          <CardDescription>
-            A continuación, se muestra la información de la experiencia
-            seleccionada.
-          </CardDescription>
+          <>
+            <CardTitle>Actualizar una experiencia</CardTitle>
+            <CardDescription>
+              A continuación, se muestra la información de la experiencia
+              seleccionada.
+            </CardDescription>
+          </>
         )}
       </CardHeader>
 

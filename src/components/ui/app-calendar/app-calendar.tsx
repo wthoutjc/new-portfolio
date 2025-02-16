@@ -57,8 +57,8 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
   };
 
   return (
-    <div className="flex w-full gap-2 justify-between">
-      <div className="w-1/3">
+    <div className="flex flex-col lg:flex-row w-full gap-4 lg:justify-between">
+      <div className="w-full lg:w-1/3">
         <Calendar
           mode="single"
           selected={date}
@@ -72,9 +72,9 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
           disabled={disabled}
         />
       </div>
-      <div className="flex flex-col gap-2 w-2/3">
-        <div className="flex space-x-4">
-          <div className="w-1/2">
+      <div className="w-full lg:w-2/3 flex flex-col gap-4">
+        <div className="flex flex-col md:flex-row md:space-x-4 gap-2">
+          <div className="w-full md:w-1/2">
             <Label htmlFor="year-select">Año</Label>
             <Select
               value={year.toString()}
@@ -92,7 +92,7 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
               </SelectContent>
             </Select>
           </div>
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             <Label htmlFor="month-select">Mes</Label>
             <Select
               value={month.toString()}
@@ -111,8 +111,8 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
             </Select>
           </div>
         </div>
-        <div className="flex space-x-4">
-          <div className="w-1/2">
+        <div className="flex flex-col md:flex-row md:space-x-4 gap-2">
+          <div className="w-full md:w-1/2">
             <Label htmlFor="hour-select">Hora</Label>
             <Select value={hour} onValueChange={setHour}>
               <SelectTrigger id="hour-select">
@@ -129,7 +129,7 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
               </SelectContent>
             </Select>
           </div>
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             <Label htmlFor="minute-select">Minuto</Label>
             <Select value={minute} onValueChange={setMinute}>
               <SelectTrigger id="minute-select">

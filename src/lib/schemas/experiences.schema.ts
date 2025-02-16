@@ -18,15 +18,7 @@ export const experiencesSchema = z
     multimedia: z.array(z.string()).optional(),
     experienceSkills: z.array(z.string()).optional(),
   })
-  .refine(
-    (data) => {
-      if (data.currentlyWorking) {
-        return data.endDate === null;
-      }
-      return data.endDate !== null;
-    },
-    {
-      message: "La fecha de fin es requerida",
-      path: ["endDate"],
-    }
-  );
+  .refine((data) => (data.currentlyWorking ? !data.endDate : !!data.endDate), {
+    message: "La fecha de fin es requerida",
+    path: ["endDate"],
+  });

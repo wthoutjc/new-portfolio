@@ -44,6 +44,7 @@ class ExperiencesRepository {
         take,
         orderBy: {
           startDate: "desc",
+          createdAt: "desc",
         },
       });
 

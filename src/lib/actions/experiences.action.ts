@@ -5,14 +5,16 @@ import { ExperiencesService } from "@/modules/experiences/services/experiences.s
 
 // Schemas
 import { experiencesSchema } from "../schemas/experiences.schema";
-import type { ExperienceActionState } from "@/lib/types/experience-action-state";
+
+// Types
+import { ActionState } from "../types/action.type";
 
 const experiencesService = new ExperiencesService();
 
-function create(
-  _: unknown,
+async function create<T>(
+  _: ActionState<T>,
   formData: FormData
-): ExperienceActionState | Promise<ExperienceActionState> {
+): Promise<ActionState<T>> {
   const userId = formData.get("userId")?.toString();
 
   if (!userId) {
@@ -53,13 +55,17 @@ function create(
     };
   }
 
-  return experiencesService.create(data, userId);
+  const experience = await experiencesService.create(data, userId);
+
+  return {
+    data: experience as T,
+  };
 }
 
-function update(
-  _: unknown,
+async function update<T>(
+  _: ActionState<T>,
   formData: FormData
-): ExperienceActionState | Promise<ExperienceActionState> {
+): Promise<ActionState<T>> {
   const id = formData.get("id")?.toString();
 
   if (!id) {
@@ -86,7 +92,11 @@ function update(
     };
   }
 
-  return experiencesService.update(id, data);
+  const experience = await experiencesService.update(id, data);
+
+  return {
+    data: experience as T,
+  };
 }
 
 export { create, update };
