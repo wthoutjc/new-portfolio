@@ -31,7 +31,7 @@ import {
 import { Search } from "lucide-react";
 
 // Theme
-import { useThemeConfig } from "@/lib/hooks/use-theme-config";
+import { useThemeConfig } from "@/hooks/use-theme-config";
 import { AppTableSkeleton } from "./app-table-skeleton";
 import { getTableStyles } from "@/lib/utils/theme.utils";
 

@@ -2,9 +2,9 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { getThemeConfig } from "../themes/theme-config";
-import { ThemeConfig } from "../interfaces/ui";
-import { Environment } from "../types/ui.type";
+import { getThemeConfig } from "../lib/themes/theme-config";
+import { ThemeConfig } from "../lib/interfaces/ui";
+import { Environment } from "../lib/types/ui.type";
 
 export const useThemeConfig = () => {
   const { theme } = useTheme();

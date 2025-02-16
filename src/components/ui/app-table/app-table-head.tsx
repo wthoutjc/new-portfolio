@@ -8,7 +8,7 @@ import { Checkbox } from "../checkbox";
 import { AppTableHeadProps } from "@/lib/interfaces/table";
 
 // Theme
-import { useThemeConfig } from "@/lib/hooks/use-theme-config";
+import { useThemeConfig } from "@/hooks/use-theme-config";
 import { getTableStyles } from "@/lib/utils/theme.utils";
 
 export const AppTableHead = ({

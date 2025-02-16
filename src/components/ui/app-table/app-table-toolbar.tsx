@@ -20,7 +20,7 @@ import { PermissionStates } from "@/lib/enums/permissions.enum";
 import { Plus } from "lucide-react";
 
 // Theme
-import { useThemeConfig } from "@/lib/hooks/use-theme-config";
+import { useThemeConfig } from "@/hooks/use-theme-config";
 import { getTableStyles } from "@/lib/utils/theme.utils";
 import { cn } from "@/lib/utils";
 

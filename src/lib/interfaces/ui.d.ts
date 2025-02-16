@@ -13,6 +13,7 @@ export interface AlertDialog {
   open: boolean;
   disabled?: boolean;
   callback?: (params?: unknown) => void;
+  children?: React.ReactNode;
 }
 
 export interface UIState {

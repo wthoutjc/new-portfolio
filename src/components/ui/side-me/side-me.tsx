@@ -1,10 +1,13 @@
 import Link from "next/link";
 
+// Components
+import { MeImageCard } from "@/components/ui/alert-dialog/me-image";
+
 const SideMe = () => {
   return (
     <div className="flex flex-col p-2 opacity-60 hover:opacity-100 ease-in-out duration-300 lg:w-1/4 md:w-full">
       <div className="flex sticky top-10 md:mt-10 md:flex-col lg:flex-col">
-        <div>Image</div>
+        <MeImageCard />
         <div className="w-2/3">
           <p className="font-bold mb-2 text-xs md:text-lg">
             Juan Camilo Ramírez Rátiva
