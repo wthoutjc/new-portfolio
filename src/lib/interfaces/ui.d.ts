@@ -1,5 +1,12 @@
 export type Severity = "error" | "warning" | "info" | "success";
 
+export interface ThemeConfig {
+  primary: string;
+  secondary: string;
+  background: string;
+  text: string;
+}
+
 export interface AlertDialog {
   title: string;
   description: string;

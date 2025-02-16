@@ -7,26 +7,36 @@ import { Checkbox } from "../checkbox";
 // Interfaces
 import { AppTableHeadProps } from "@/lib/interfaces/table";
 
-const AppTableHead = ({
+// Theme
+import { useThemeConfig } from "@/lib/hooks/use-theme-config";
+import { getTableStyles } from "@/lib/utils/theme.utils";
+
+export const AppTableHead = ({
+  onSelectAllClick,
   columns,
   numSelected,
-  onSelectAllClick,
   rowCount,
-  readonly,
 }: AppTableHeadProps) => {
+  const { themeConfig } = useThemeConfig();
+  const tableStyles = themeConfig ? getTableStyles(themeConfig) : null;
+
+  if (!tableStyles) return null;
+
   return (
-    <TableHeader className="bg-primary">
+    <TableHeader>
       <TableRow>
-        <TableHead>
+        <TableHead className={tableStyles.header.base}>
           <Checkbox
-            className="border-white"
-            disabled={(numSelected > 0 && numSelected < rowCount) || readonly}
             checked={rowCount > 0 && numSelected === rowCount}
             onCheckedChange={onSelectAllClick}
           />
         </TableHead>
         {columns.slice(1).map((column, index) => (
-          <TableHead className="text-white" key={index}>
+          <TableHead
+            key={index}
+            className={tableStyles.header.base}
+            style={tableStyles.customStyles.headerCell}
+          >
             {column}
           </TableHead>
         ))}
@@ -34,5 +44,3 @@ const AppTableHead = ({
     </TableHeader>
   );
 };
-
-export { AppTableHead };

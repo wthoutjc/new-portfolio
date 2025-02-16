@@ -19,6 +19,11 @@ import { ICONS, LABEL_ICONS } from "@/lib/constants/actions.constant";
 import { PermissionStates } from "@/lib/enums/permissions.enum";
 import { Plus } from "lucide-react";
 
+// Theme
+import { useThemeConfig } from "@/lib/hooks/use-theme-config";
+import { getTableStyles } from "@/lib/utils/theme.utils";
+import { cn } from "@/lib/utils";
+
 const AppTableToolbar = ({
   numSelected,
   title,
@@ -26,14 +31,25 @@ const AppTableToolbar = ({
 }: AppTableToolbarProps) => {
   const pathname = usePathname();
 
+  const { themeConfig } = useThemeConfig();
+  const tableStyles = themeConfig ? getTableStyles(themeConfig) : null;
+
+  if (!tableStyles) return null;
+
   return (
-    <div className="flex justify-between items-center p-3 bg-primary">
+    <div
+      className={cn(
+        tableStyles.header.base,
+        "flex justify-between items-center p-3"
+      )}
+      style={tableStyles.customStyles.headerCell}
+    >
       {numSelected > 0 ? (
-        <p className="text-white text-sm">
+        <p className="text-sm">
           {numSelected > 1 ? `${numSelected} seleccionados` : "1 seleccionado"}
         </p>
       ) : (
-        <p className="text-white text-sm font-bold">{title}</p>
+        <p className="text-sm font-bold">{title}</p>
       )}
 
       <div className="flex">

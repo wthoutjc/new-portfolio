@@ -13,6 +13,11 @@ import {
   TableFooter,
 } from "@/components/ui/table";
 import AppTablePagination from "./app-table-pagination";
+import { AppTableActions } from "./app-table-actions";
+import { AppTableHead } from "./app-table-head";
+import { AppTableToolbar } from "./app-table-toolbar";
+import { Checkbox } from "../checkbox";
+import { Error } from "../error/error";
 
 // Interfaces
 import {
@@ -21,14 +26,14 @@ import {
   AppTableToolbarProps,
   TableFilter,
 } from "@/lib/interfaces/table";
-import { AppTableActions } from "./app-table-actions";
 
 // Icons
 import { Search } from "lucide-react";
-import { Error } from "../error/error";
-import { AppTableHead } from "./app-table-head";
-import { AppTableToolbar } from "./app-table-toolbar";
-import { Checkbox } from "../checkbox";
+
+// Theme
+import { useThemeConfig } from "@/lib/hooks/use-theme-config";
+import { AppTableSkeleton } from "./app-table-skeleton";
+import { getTableStyles } from "@/lib/utils/theme.utils";
 
 const AppTable = ({
   caption,
@@ -41,6 +46,9 @@ const AppTable = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const { themeConfig } = useThemeConfig();
+  const tableStyles = themeConfig ? getTableStyles(themeConfig) : null;
 
   const rowsPerPage = parseInt(searchParams.get("rowsPerPage") || "10", 10);
   const totalPages = Math.ceil(count / rowsPerPage);
@@ -109,6 +117,10 @@ const AppTable = ({
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
+  if (!themeConfig || !tableStyles) {
+    return <AppTableSkeleton />;
+  }
+
   if (!data.length) {
     return (
       <div className="flex flex-col">
@@ -123,7 +135,7 @@ const AppTable = ({
     <div className="bg-muted">
       <AppTableActions filters={clientFilters} />
       <AppTableToolbar {...tableToolbarData} />
-      <Table>
+      <Table className={tableStyles.table.base}>
         {caption && <TableCaption className="mb-4">{caption}</TableCaption>}
         <AppTableHead {...tableHeadData} />
         <TableBody>
@@ -135,28 +147,29 @@ const AppTable = ({
             return (
               <TableRow
                 key={(row as any)[firstKey] || i}
-                className={`${checked ? "selected" : ""} ${
-                  readonly ? "cursor-pointer" : ""
+                className={tableStyles.row.styles({
+                  isSelected: checked,
+                  index: i,
+                })}
+                style={
+                  checked
+                    ? tableStyles.customStyles.selectedRow
+                    : i % 2 === 0
+                    ? tableStyles.customStyles.alternateRow
+                    : undefined
                 }
-                ${i % 2 === 0 ? "bg-white" : ""} ${
-                  i === values.length - 1 ? "rounded-b-lg" : ""
-                } ${i === 0 ? "rounded-t-lg" : ""} ${
-                  i === values.length - 1 && i === 0 ? "rounded-lg" : ""
-                }
-                ${checked ? "bg-blue-100" : ""}
-                `}
                 tabIndex={-1}
                 onDoubleClick={() =>
                   router.push(`${pathname}/${(row as any)[firstKey]}`)
                 }
                 onClick={(event) => handleClick(event, (row as any)[firstKey])}
               >
-                <TableCell>
+                <TableCell className={tableStyles.cell.base}>
                   <Checkbox checked={checked} />
                 </TableCell>
 
                 {keys.slice(1).map((key) => (
-                  <TableCell key={key}>
+                  <TableCell key={key} className={tableStyles.cell.base}>
                     {(() => {
                       const cellValue = (row as Record<string, any>)[key];
                       if (cellValue == null) return "-";

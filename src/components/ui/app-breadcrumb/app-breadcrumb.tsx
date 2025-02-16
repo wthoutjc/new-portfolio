@@ -14,7 +14,7 @@ import {
 import { BREADCRUMB_DATA } from "./breadcrumb-data";
 
 // Capitalize
-import { capitalize } from "@/utils/capitalize";
+import { capitalize } from "@/lib/utils/capitalize";
 
 // UUID
 import { v4 as uuid } from "uuid";
