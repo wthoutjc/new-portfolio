@@ -1,6 +1,7 @@
 "use client";
 import { useState, useActionState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 // NextAuth
 import { signIn } from "@/lib/actions/auth.action";
@@ -29,16 +30,30 @@ const Login = () => {
   return (
     <Card className="w-[350px]">
       <CardHeader className="flex flex-col gap-2">
-        <div className="flex justify-start">
-          <Image
-            src="https://res.cloudinary.com/ddmeptk5c/image/upload/f_auto,q_auto/v1/portfolio/wonlwuluroldfu03zcml"
-            width={130}
-            height={0}
-            className="rounded-t-lg w-auto h-auto"
-            priority
-            alt="Login background"
-          />
-        </div>
+        <ul>
+          <li className="dark:flex w-32 opacity-80 hover:opacity-100 ease-out duration-300 hidden">
+            <Link href="/">
+              <Image
+                className="object-cover"
+                src="https://res.cloudinary.com/ddmeptk5c/image/upload/f_auto,q_auto/v1/portfolio/nrmlj5wmeop1rcqp5hdp"
+                alt="ionjc"
+                width={250}
+                height={250}
+              />
+            </Link>
+          </li>
+          <li className="flex w-32 opacity-80 hover:opacity-100 ease-out duration-300 dark:hidden">
+            <Link href="/">
+              <Image
+                className="object-cover"
+                src="https://res.cloudinary.com/ddmeptk5c/image/upload/f_auto,q_auto/v1/portfolio/wonlwuluroldfu03zcml"
+                alt="ionjc"
+                width={250}
+                height={250}
+              />
+            </Link>
+          </li>
+        </ul>
 
         <div className="flex flex-col gap-2 mt-2">
           <CardTitle>Iniciar sesión</CardTitle>

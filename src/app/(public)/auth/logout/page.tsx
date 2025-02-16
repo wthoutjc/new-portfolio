@@ -13,12 +13,7 @@ const LogoutPage = () => {
   }, []);
 
   return (
-    <div className="flex absolute w-screen h-screen bg-[#112233] justify-center z-50">
-      <FullsizeLoader
-        size="medium"
-        text="Cerrando sesión, espere por favor..."
-      />
-    </div>
+    <FullsizeLoader size="medium" text="Cerrando sesión, espere por favor..." />
   );
 };
 

@@ -20,7 +20,7 @@ const FullsizeLoader = ({
       <Image
         src="https://res.cloudinary.com/ddmeptk5c/image/upload/f_auto,q_auto/v1/portfolio/zuvtlwc26x7pj15k8lzo"
         alt="ccb-logo"
-        width={120}
+        width={60}
         height={0}
         className="w-auto h-auto"
         priority

@@ -32,7 +32,7 @@ const AppNavbar = () => {
   return (
     <div className="flex max-w-full p-5 justify-center drop-shadow-sm h-[60px] relative">
       <div className="flex max-w-7xl w-full justify-between items-center">
-        <div>
+        <ul>
           <li className="dark:flex w-24 opacity-80 hover:opacity-100 ease-out duration-300 hidden">
             <Link href="/">
               <Image
@@ -55,7 +55,7 @@ const AppNavbar = () => {
               />
             </Link>
           </li>
-        </div>
+        </ul>
         <NavigationMenu className="justify-end">
           <NavigationMenuList className="space-x-8 mr-4">
             {items.map((item) => (
