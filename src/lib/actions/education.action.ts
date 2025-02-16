@@ -95,4 +95,23 @@ async function update<T>(
   };
 }
 
-export { create, update };
+async function remove<T>(
+  _: ActionState<T>,
+  formData: FormData
+): Promise<ActionState<T>> {
+  const id = formData.get("id")?.toString();
+
+  if (!id) {
+    return {
+      errors: { id: ["No se pudo obtener el id de la educación"] },
+    };
+  }
+
+  const education = await educationsService.delete(id);
+
+  return {
+    data: education as T,
+  };
+}
+
+export { create, update, remove };

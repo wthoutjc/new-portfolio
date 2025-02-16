@@ -34,6 +34,7 @@ import { Textarea } from "../ui/textarea";
 import { Checkbox } from "../ui/checkbox";
 import { AppCalendar } from "@/components/ui/app-calendar/app-calendar";
 import { SubmitButton } from "../ui/submit-button/submit-button";
+import { Button } from "../ui/button";
 
 // Interfaces
 import { Skill } from "@/modules/skills/interfaces/skills";
@@ -55,7 +56,7 @@ import {
 } from "@/modules/experiences/enums/experiences.enum";
 
 // Actions
-import { create, update } from "@/lib/actions/experiences.action";
+import { create, update, remove } from "@/lib/actions/experiences.action";
 import {
   TOAST_ERROR_STYLE,
   TOAST_SUCCESS_STYLE,
@@ -63,6 +64,9 @@ import {
 
 // Sonner
 import { toast } from "sonner";
+
+// Icons
+import { Trash } from "lucide-react";
 
 // Types
 import { ActionState } from "@/lib/types/action.type";
@@ -93,6 +97,11 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
     undefined
   );
 
+  const [stateRemove, formActionRemove] = useActionState<
+    ActionState<Experience>,
+    FormData
+  >(remove<Experience>, undefined);
+
   const defaultValues: Partial<z.infer<typeof experiencesSchema>> = {
     ...initialValues,
     ...rest,
@@ -121,20 +130,37 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
     });
   });
 
+  const handleRemove = () => {
+    if (!user) return;
+
+    const formData = new FormData();
+    formData.append("id", id ?? "");
+    formData.append("userId", user.id ?? "");
+
+    startTransition(() => {
+      formActionRemove(formData);
+    });
+  };
+
   useEffect(() => {
-    const { data, errors } = state || {};
+    const generalState = state || stateRemove;
 
-    if (errors) toast.error(JSON.stringify(errors), TOAST_ERROR_STYLE);
+    if (generalState?.errors)
+      toast.error(JSON.stringify(generalState.errors), TOAST_ERROR_STYLE);
 
-    if (data) {
+    if (generalState?.data) {
       const message = `Experiencia ${
-        mode === Crud.CREATE ? "registrada" : "actualizada"
+        stateRemove
+          ? "eliminada"
+          : mode === Crud.CREATE
+          ? "registrada"
+          : "actualizada"
       } correctamente`;
 
       toast.success(message, TOAST_SUCCESS_STYLE);
       return router.push("/system");
     }
-  }, [state, router, mode]);
+  }, [state, stateRemove, router, mode]);
 
   useEffect(() => {
     if (currentlyWorking) form.setValue("endDate", null);
@@ -445,8 +471,22 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
               )}
             />
 
-            <div className="flex justify-start">
-              <SubmitButton text="Guardar" disabled={!!state} />
+            <div className="w-full flex justify-between">
+              <div className="flex justify-start">
+                <SubmitButton text="Guardar" disabled={!!state} />
+              </div>
+
+              {experience && (
+                <div className="flex justify-start">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleRemove}
+                  >
+                    Eliminar <Trash className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
             </div>
           </form>
         </Form>

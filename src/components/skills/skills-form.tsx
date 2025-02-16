@@ -23,6 +23,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/components/ui/submit-button/submit-button";
+import { Button } from "@/components/ui/button";
+import { Trash } from "lucide-react";
 
 // Hooks y validación
 import { z } from "zod";
@@ -35,6 +37,7 @@ import { Crud } from "@/lib/enums/crud.enum";
 import {
   create as createSkill,
   update as updateSkill,
+  remove as removeSkill,
 } from "@/lib/actions/skill.action";
 import { toast } from "sonner";
 import { Skill } from "@/lib/interfaces/skill";
@@ -68,10 +71,17 @@ const SkillsForm = ({ skill }: Props) => {
     mode === Crud.CREATE ? createSkill : updateSkill,
     undefined
   );
+
+  const [stateRemove, formActionRemove] = useActionState<
+    ActionState<Skill>,
+    FormData
+  >(removeSkill, undefined);
+
   const form = useForm<z.infer<typeof skillsSchema>>({
     resolver: zodResolver(skillsSchema),
     defaultValues,
   });
+
   const onSubmit = form.handleSubmit((data) => {
     if (!user) return;
 
@@ -88,20 +98,38 @@ const SkillsForm = ({ skill }: Props) => {
     });
   });
 
+  const handleRemove = () => {
+    if (!user) return;
+
+    const formData = new FormData();
+    formData.append("id", id ?? "");
+    formData.append("userId", user.id ?? "");
+
+    startTransition(() => {
+      formActionRemove(formData);
+    });
+  };
+
   useEffect(() => {
-    if (state?.errors) {
-      toast.error(JSON.stringify(state.errors), TOAST_ERROR_STYLE);
+    const generalState = state || stateRemove;
+
+    if (generalState?.errors) {
+      toast.error(JSON.stringify(generalState.errors), TOAST_ERROR_STYLE);
     }
 
-    if (state?.data) {
+    if (generalState?.data) {
       toast.success(
         `Habilidad ${
-          mode === Crud.CREATE ? "creada" : "actualizada"
+          stateRemove
+            ? "eliminada"
+            : mode === Crud.CREATE
+            ? "registrada"
+            : "actualizada"
         } correctamente`
       );
-      router.refresh();
+      router.push("/system/skills");
     }
-  }, [state, mode, router]);
+  }, [state, stateRemove, router, mode]);
 
   return (
     <Card className="m-3 mt-1 p-3 pt-1">
@@ -175,7 +203,23 @@ const SkillsForm = ({ skill }: Props) => {
                 </FormItem>
               )}
             />
-            <SubmitButton text="Guardar" />
+            <div className="w-full flex justify-between">
+              <div className="flex justify-start">
+                <SubmitButton text="Guardar" />
+              </div>
+
+              {skill && (
+                <div className="flex justify-start">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleRemove}
+                  >
+                    Eliminar <Trash className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
+            </div>
           </form>
         </Form>
       </CardContent>

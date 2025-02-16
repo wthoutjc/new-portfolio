@@ -5,7 +5,7 @@ const AppFooter = () => {
     <footer className="relative flex max-w-full p-5 justify-center group">
       <div className="flex flex-col max-w-7xl w-full">
         {/* Sección de redes sociales */}
-        <section className="flex space-x-4 mb-4">
+        <section className="flex space-x-4">
           <h3 className="text-sm font-semibold mb-3">Conéctate conmigo:</h3>
           <div className="flex gap-4">
             <Link
@@ -26,7 +26,7 @@ const AppFooter = () => {
         </section>
 
         {/* Sección de copyright */}
-        <section className="mt-auto">
+        <section className="mt-0">
           <p className="text-xs text-gray-600 dark:text-gray-300">
             © 2024 IONJC. Todos los derechos reservados bajo la licencia MIT.
             <span className="ml-2">

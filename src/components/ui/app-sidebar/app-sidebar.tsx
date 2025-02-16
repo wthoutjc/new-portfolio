@@ -35,16 +35,30 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <div className="flex items-center justify-between">
-          <Link href={"/system"}>
-            <Image
-              src="https://res.cloudinary.com/ddmeptk5c/image/upload/f_auto,q_auto/v1/portfolio/wonlwuluroldfu03zcml"
-              width={120}
-              height={30}
-              className="rounded-t-lg w-auto h-auto"
-              priority
-              alt="Cámara de Comercio de Bogotá"
-            />
-          </Link>
+          <ul>
+            <li className="dark:flex w-32 opacity-80 hover:opacity-100 ease-out duration-300 hidden">
+              <Link href={"/system"}>
+                <Image
+                  className="object-cover"
+                  src="https://res.cloudinary.com/ddmeptk5c/image/upload/f_auto,q_auto/v1/portfolio/nrmlj5wmeop1rcqp5hdp"
+                  alt="ionjc"
+                  width={250}
+                  height={250}
+                />
+              </Link>
+            </li>
+            <li className="flex w-32 opacity-80 hover:opacity-100 ease-out duration-300 dark:hidden">
+              <Link href={"/system"}>
+                <Image
+                  className="object-cover"
+                  src="https://res.cloudinary.com/ddmeptk5c/image/upload/f_auto,q_auto/v1/portfolio/wonlwuluroldfu03zcml"
+                  alt="ionjc"
+                  width={250}
+                  height={250}
+                />
+              </Link>
+            </li>
+          </ul>
         </div>
       </SidebarHeader>
 

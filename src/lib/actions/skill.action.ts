@@ -62,4 +62,25 @@ async function update<T>(
     data: skill as T,
   };
 }
-export { create, update };
+
+async function remove<T>(
+  _: ActionState<T>,
+  formData: FormData
+): Promise<ActionState<T>> {
+  const id = formData.get("id")?.toString();
+
+  if (!id) {
+    return {
+      errors: {
+        id: ["No se pudo obtener el id del skill"],
+      },
+    };
+  }
+
+  const skill = await skillsService.delete(id);
+  return {
+    data: skill as T,
+  };
+}
+
+export { create, update, remove };

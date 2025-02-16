@@ -42,6 +42,7 @@ import { Crud } from "@/lib/enums/crud.enum";
 import {
   create as createUserSkill,
   update as updateUserSkill,
+  remove as removeUserSkill,
 } from "@/lib/actions/user-skill.action";
 import { toast } from "sonner";
 import { UserSkill } from "@/lib/interfaces/skill";
@@ -51,7 +52,7 @@ import { Skill } from "@/modules/skills/interfaces/skills";
 import { SkillSource } from "@/lib/enums/skill.enum";
 
 // Icons
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Trash } from "lucide-react";
 
 // Zustand
 import { useUIStore } from "@/zustand/store";
@@ -98,6 +99,11 @@ const UserSkillsForm = ({
     undefined
   );
 
+  const [stateRemove, formActionRemove] = useActionState<
+    ActionState<UserSkill>,
+    FormData
+  >(removeUserSkill, undefined);
+
   const form = useForm<z.infer<typeof userSkillSchema>>({
     resolver: zodResolver(userSkillSchema),
     defaultValues,
@@ -134,20 +140,38 @@ const UserSkillsForm = ({
     });
   });
 
+  const handleRemove = () => {
+    if (!user) return;
+
+    const formData = new FormData();
+    formData.append("id", id ?? "");
+    formData.append("userId", user.id ?? "");
+
+    startTransition(() => {
+      formActionRemove(formData);
+    });
+  };
+
   useEffect(() => {
-    if (state?.errors) {
-      toast.error(JSON.stringify(state.errors), TOAST_ERROR_STYLE);
+    const generalState = state || stateRemove;
+
+    if (generalState?.errors) {
+      toast.error(JSON.stringify(generalState.errors), TOAST_ERROR_STYLE);
     }
 
-    if (state?.data) {
+    if (generalState?.data) {
       toast.success(
         `Habilidad ${
-          mode === Crud.CREATE ? "creada" : "actualizada"
+          stateRemove
+            ? "eliminada"
+            : mode === Crud.CREATE
+            ? "registrada"
+            : "actualizada"
         } correctamente`
       );
       router.push("/system/skills");
     }
-  }, [state, router, mode]);
+  }, [state, stateRemove, router, mode]);
 
   return (
     <Card className="m-3 mt-1 p-3 pt-1">
@@ -311,8 +335,22 @@ const UserSkillsForm = ({
               />
             )}
 
-            <div className="flex justify-start">
-              <SubmitButton text="Guardar" />
+            <div className="w-full flex justify-between">
+              <div className="flex justify-start">
+                <SubmitButton text="Guardar" />
+              </div>
+
+              {userSkill && (
+                <div className="flex justify-start">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleRemove}
+                  >
+                    Eliminar <Trash className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
             </div>
           </form>
         </Form>

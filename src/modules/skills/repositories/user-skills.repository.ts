@@ -22,11 +22,6 @@ class UserSkillsRepository {
   }
 
   async findAll(findAllDto: FindAllDto, userId: string) {
-    console.log({
-      findAllDto,
-      userId,
-    });
-
     const { contains, page, take } = findAllDto;
 
     const where: Prisma.UsersSkillsWhereInput = {

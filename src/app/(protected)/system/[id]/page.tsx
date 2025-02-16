@@ -9,11 +9,11 @@ interface Props {
   }>;
 }
 
+const experiencesService = new ExperiencesService();
+const skillsService = new SkillsService();
+
 export default async function SystemExperiencePage({ params }: Props) {
   const id = (await params).id;
-
-  const experiencesService = new ExperiencesService();
-  const skillsService = new SkillsService();
 
   const experience = await experiencesService.findOne(id);
   if (!experience) return <Error message="Experiencia no encontrada" />;

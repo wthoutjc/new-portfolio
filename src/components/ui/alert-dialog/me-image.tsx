@@ -27,45 +27,38 @@ const MeImageCard = () => {
   const handleShowModal = () => {
     const alertDialog: AlertDialog = {
       title: "Juan Camilo Ramírez Rátiva",
-      description: `🚀 Sobre mí:
+      description: `🚀 About me:
 
-Soy un Desarrollador Fullstack dedicado con amplia experiencia en AWS, Python y TypeScript, comprometido con la entrega de soluciones de software innovadoras, eficientes y de alta calidad. Me destaco en la aplicación de principios de diseño avanzados y mejores prácticas de la industria para impulsar resultados impactantes.
+I am a dedicated Fullstack Developer with extensive expertise in AWS, Python, and TypeScript, committed to delivering innovative, efficient, and high-quality software solutions. I excel in applying advanced design principles and industry best practices to drive impactful results.
 
-🌟 Habilidades destacadas:
+🌟 Outstanding skills:
 
-🏗 Patrones de arquitectura:
-• Experiencia en patrones orientados a eventos y recursos
-• Optimización de escalabilidad y modularidad
+     🏗 Architecture patterns : Experience in event-driven and resource-oriented patterns, optimizing
+     scalability and modularity.
 
-✅ Prácticas sólidas de desarrollo:
-• Aplicación de principios SOLID
-• Patrones de diseño para código mantenible y reutilizable
+     ✅ Strong development practices: Applying SOLID principles and design patterns to ensure
+     maintainable and reusable code.
 
-🔄 Metodologías ágiles:
-• Uso de frameworks como Scrum, Kanban y XP
-• Mejora de la productividad del equipo
+     🔄 Agile methodologies: Leveraging frameworks like Scrum, Kanban, and XP to enhance team
+     productivity.
 
-🧑‍🏫 Formación y mentoría:
-• Capacitación en mejores prácticas
-• Toma de decisiones técnicas
-• Mejora continua
+     🧑‍🏫 Training and mentoring: Training teams in best practices, technical decision-making, and
+     continuous improvement.
 
-💡 Soporte especializado:
-• Resolución de problemas complejos
-• Diseño de soluciones personalizadas
-• Infraestructura y software
+     💡 Specialized support: Resolving complex issues and designing tailored solutions for infrastructure and
+     software.
 
-🛠 Toma de decisiones técnicas:
-• Evaluación de herramientas y tecnologías
-• Estrategias para soluciones eficientes
+     🛠 Technical decision making: Evaluation of tools, technologies and strategies to ensure efficient and
+     effective solutions.
 
-📈 Experiencia y formación:
+📈 Experience and background:
 
-🎓 Ingeniero de Sistemas con certificación en Data Science, respaldado por un historial probado en la entrega de soluciones complejas.
+     🎓 Systems Engineer with Data Science certification, backed by a proven track record in delivering
+     complex solutions.
 
-Siempre estoy buscando nuevos desafíos y oportunidades para seguir creciendo y contribuyendo al éxito de proyectos innovadores. 🚀`,
+I am always looking for new challenges and opportunities to keep growing and contributing to the success of innovative projects. 🚀`,
       open: true,
-      children: <MeImage />,
+      children: <MeImage className="rounded-full w-96 h-96" />,
     };
 
     setAlertDialog(alertDialog);
