@@ -1,26 +1,21 @@
-import {
-  EmploymentType,
-  LocationType,
-} from "@/modules/experiences/enums/experiences.enum";
+import { JsonValue } from "@prisma/client/runtime/library";
 
 export interface Experience {
   id: string;
   title: string;
-  employmentType: EmploymentType;
+  employmentType: string | null;
   company: string;
-  location: string;
-  locationType: LocationType;
+  location: string | null;
+  locationType: string | null;
   startDate: Date;
-  endDate?: Date;
+  endDate: Date | null;
   currentlyWorking: boolean;
-  description?: string;
-  multimedia?: string[];
-  experienceSkills?: string[];
+  description: string | null;
+  multimedia: JsonValue;
+  experienceSkills: ExperienceSkill[];
 }
 
 export interface ExperienceSkill {
-  id: string;
-  name: string;
-  description: string;
   experienceId: string;
+  skillId: string;
 }

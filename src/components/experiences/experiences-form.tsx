@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useEffect } from "react";
+import { startTransition, useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 // Auth
@@ -72,6 +72,14 @@ interface Props {
   experience?: Experience;
 }
 
+const initialValues: Partial<z.infer<typeof experiencesSchema>> = {
+  title: "",
+  company: "",
+  startDate: new Date(),
+  currentlyWorking: false,
+  experienceSkills: [],
+};
+
 const ExperiencesForm = ({ experience }: Props) => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -86,12 +94,7 @@ const ExperiencesForm = ({ experience }: Props) => {
   );
 
   const defaultValues: Partial<z.infer<typeof experiencesSchema>> = {
-    title: "",
-    company: "",
-    location: "",
-    description: "",
-    startDate: new Date(),
-    currentlyWorking: false,
+    ...initialValues,
     ...rest,
   };
 
@@ -113,8 +116,9 @@ const ExperiencesForm = ({ experience }: Props) => {
       formData.append(key, value?.toString() ?? "")
     );
 
-    formAction(formData);
-    return;
+    startTransition(() => {
+      formAction(formData);
+    });
   });
 
   useEffect(() => {
@@ -123,13 +127,23 @@ const ExperiencesForm = ({ experience }: Props) => {
     if (errors) toast.error(JSON.stringify(errors), TOAST_ERROR_STYLE);
 
     if (data) {
-      toast.success(
-        "Experiencia registrada correctamente",
-        TOAST_SUCCESS_STYLE
-      );
+      const message = `Experiencia ${
+        mode === Crud.CREATE ? "registrada" : "actualizada"
+      } correctamente`;
+
+      toast.success(message, TOAST_SUCCESS_STYLE);
       return router.push("/system");
     }
-  }, [state, router]);
+  }, [state, router, mode]);
+
+  useEffect(() => {
+    console.log({
+      currentlyWorking,
+      form,
+    });
+
+    if (currentlyWorking) form.setValue("endDate", null);
+  }, [currentlyWorking, form]);
 
   return (
     <Card className="m-3 mt-1 p-3 pt-1">
@@ -188,7 +202,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        defaultValue={field.value ?? undefined}
                         disabled={!!state}
                       >
                         <FormItem>
@@ -265,7 +279,12 @@ const ExperiencesForm = ({ experience }: Props) => {
                   <FormItem className="w-full">
                     <FormLabel>Ubicación</FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} disabled={!!state} />
+                      <Input
+                        type="text"
+                        {...field}
+                        disabled={!!state}
+                        value={field.value ?? ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -282,7 +301,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        defaultValue={field.value ?? undefined}
                         disabled={!!state}
                       >
                         <FormItem>
@@ -338,7 +357,7 @@ const ExperiencesForm = ({ experience }: Props) => {
                         Fecha de Fin <span className="text-red-500">*</span>
                       </FormLabel>
                       <AppCalendar
-                        selected={field.value}
+                        selected={field.value ?? undefined}
                         onSelect={field.onChange}
                         disabled={!!state}
                       />
@@ -357,7 +376,11 @@ const ExperiencesForm = ({ experience }: Props) => {
                 <FormItem className="w-full">
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
-                    <Textarea {...field} disabled={!!state} />
+                    <Textarea
+                      {...field}
+                      disabled={!!state}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

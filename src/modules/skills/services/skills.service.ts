@@ -4,7 +4,11 @@ import { CreateSkillDto } from "../dto/create-skill.dto";
 import { UpdateSkillDto } from "../dto/update-skill.dto";
 
 class SkillsService {
-  constructor(private readonly skillsRepository: SkillsRepository) {}
+  private readonly skillsRepository: SkillsRepository;
+
+  constructor() {
+    this.skillsRepository = new SkillsRepository();
+  }
 
   findAll(findAllDto: FindAllDto) {
     return this.skillsRepository.findAll(findAllDto);

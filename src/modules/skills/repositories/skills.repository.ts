@@ -5,7 +5,9 @@ import { CreateSkillDto } from "@/modules/skills/dto/create-skill.dto";
 import { UpdateSkillDto } from "@/modules/skills/dto/update-skill.dto";
 
 class SkillsRepository {
-  constructor(private readonly dbService: typeof db) {
+  private readonly dbService: typeof db;
+
+  constructor() {
     this.dbService = db;
   }
 

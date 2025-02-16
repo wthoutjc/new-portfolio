@@ -43,8 +43,7 @@ class ExperiencesRepository {
         skip: (page - 1) * take,
         take,
         orderBy: {
-          startDate: "desc",
-          createdAt: "desc",
+          startDate: "asc",
         },
       });
 
@@ -77,9 +76,11 @@ class ExperiencesRepository {
       multimedia: createExperienceDto.multimedia ?? Prisma.JsonNull,
       user: { connect: { id: userId } },
       experienceSkills: {
-        create: (createExperienceDto.experienceSkills ?? []).map((skillId) => ({
-          skill: { connect: { id: skillId } },
-        })),
+        create: (createExperienceDto.experienceSkills ?? []).map(
+          (skillDto) => ({
+            skill: { connect: { id: skillDto.skillId } },
+          })
+        ),
       },
     };
 
@@ -89,11 +90,20 @@ class ExperiencesRepository {
   }
 
   update(id: string, updateExperienceDto: UpdateExperienceDto) {
+    console.log({ id, updateExperienceDto });
+
     const data: Prisma.ExperiencesUpdateInput = {
       ...updateExperienceDto,
+      multimedia:
+        updateExperienceDto.multimedia === null
+          ? Prisma.JsonNull
+          : updateExperienceDto.multimedia,
       experienceSkills: {
         connect: updateExperienceDto.experienceSkills?.map((skillDto) => ({
-          experienceId_skillId: { experienceId: id, skillId: skillDto.skillId },
+          experienceId_skillId: {
+            experienceId: id,
+            skillId: skillDto.skillId,
+          },
         })),
       },
     };

@@ -36,7 +36,7 @@ async function create<T>(
     startDate: new Date(formData.get("startDate") as string),
     endDate:
       formData.get("currentlyWorking") === "true"
-        ? undefined
+        ? null
         : new Date(formData.get("endDate") as string),
     currentlyWorking: formData.get("currentlyWorking") === "true",
   });
@@ -76,7 +76,21 @@ async function update<T>(
     };
   }
 
-  const { success, data, error } = experiencesSchema.safeParse(formData);
+  const { success, data, error } = experiencesSchema.safeParse({
+    location: formData.get("location"),
+    locationType: formData.get("locationType"),
+    employment: formData.get("employment"),
+    employmentType: formData.get("employmentType"),
+    title: formData.get("title"),
+    company: formData.get("company"),
+    description: formData.get("description"),
+    startDate: new Date(formData.get("startDate") as string),
+    endDate:
+      formData.get("currentlyWorking") === "true"
+        ? null
+        : new Date(formData.get("endDate") as string),
+    currentlyWorking: formData.get("currentlyWorking") === "true",
+  });
 
   if (!success) {
     return {

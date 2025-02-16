@@ -1,13 +1,18 @@
 export class CreateExperienceDto {
   title!: string;
-  employmentType!: string;
+  employmentType?: string | null;
   company!: string;
-  location!: string;
-  locationType!: string;
+  location?: string | null;
+  locationType?: string | null;
   startDate!: Date;
-  endDate?: Date;
+  endDate?: Date | null;
   currentlyWorking!: boolean;
-  description?: string;
+  description?: string | null;
   multimedia?: string[];
-  experienceSkills?: string[];
+  experienceSkills?: CreateExperienceSkillDto[] | null;
+}
+
+export class CreateExperienceSkillDto {
+  experienceId!: string;
+  skillId!: string;
 }

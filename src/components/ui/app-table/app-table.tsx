@@ -147,7 +147,7 @@ const AppTable = ({
                 `}
                 tabIndex={-1}
                 onDoubleClick={() =>
-                  router.push(`${pathname}/${(row as any)[firstKey]}?read=1`)
+                  router.push(`${pathname}/${(row as any)[firstKey]}`)
                 }
                 onClick={(event) => handleClick(event, (row as any)[firstKey])}
               >

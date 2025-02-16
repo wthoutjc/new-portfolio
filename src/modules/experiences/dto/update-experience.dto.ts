@@ -1,15 +1,15 @@
-import { ConnectExperienceSkillDto } from "./create-experience.dto";
+import { CreateExperienceSkillDto } from "./create-experience.dto";
 
 export class UpdateExperienceDto {
   title?: string;
-  employmentType?: string;
+  employmentType?: string | null;
   company?: string;
-  location?: string;
-  locationType?: string;
+  location?: string | null;
+  locationType?: string | null;
   startDate?: Date;
-  endDate?: Date;
+  endDate?: Date | null;
   currentlyWorking?: boolean;
-  description?: string;
-  multimedia?: string[];
-  experienceSkills?: ConnectExperienceSkillDto[];
+  description?: string | null;
+  multimedia?: string[] | null;
+  experienceSkills?: CreateExperienceSkillDto[] | null;
 }

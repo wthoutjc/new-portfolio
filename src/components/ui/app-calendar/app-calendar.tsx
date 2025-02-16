@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 
@@ -21,13 +21,20 @@ interface Props {
 }
 
 export function AppCalendar({ selected, onSelect, disabled }: Props) {
-  const [date, setDate] = React.useState<Date | undefined>(selected);
-  const [year, setYear] = React.useState<number>(new Date().getFullYear());
-  const [month, setMonth] = React.useState<number>(new Date().getMonth());
-  const [hour, setHour] = React.useState<string>("00");
-  const [minute, setMinute] = React.useState<string>("00");
+  console.log({
+    selected,
+  });
 
-  const years = Array.from({ length: 10 }, (_, i) => year - 5 + i);
+  const [date, setDate] = useState<Date | undefined>(selected);
+  const [year, setYear] = useState<number | undefined>(date?.getFullYear());
+  const [month, setMonth] = useState<number | undefined>(date?.getMonth());
+  const [hour, setHour] = useState<string>("00");
+  const [minute, setMinute] = useState<string>("00");
+
+  const years = Array.from(
+    { length: 10 },
+    (_, i) => new Date().getFullYear() - 5 + i
+  );
   const months = [
     "Enero",
     "Febrero",
@@ -45,9 +52,10 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
 
   const handleDateChange = (newDate: Date | undefined) => {
     if (newDate) {
-      setDate(newDate);
       onSelect(newDate);
+      setDate(newDate);
       setMonth(newDate.getMonth());
+      setYear(newDate.getFullYear());
     }
   };
 
@@ -63,7 +71,7 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
           mode="single"
           selected={date}
           onSelect={handleDateChange}
-          month={new Date(year, month)}
+          month={year && month ? new Date(year, month) : undefined}
           onMonthChange={(newMonth: Date) => {
             setMonth(newMonth.getMonth());
             onSelect(newMonth);
@@ -77,11 +85,11 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
           <div className="w-full md:w-1/2">
             <Label htmlFor="year-select">Año</Label>
             <Select
-              value={year.toString()}
+              value={year?.toString()}
               onValueChange={(value) => setYear(Number.parseInt(value))}
             >
               <SelectTrigger id="year-select">
-                <SelectValue>{year}</SelectValue>
+                <SelectValue>{year?.toString()}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {years.map((y) => (
@@ -95,11 +103,13 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
           <div className="w-full md:w-1/2">
             <Label htmlFor="month-select">Mes</Label>
             <Select
-              value={month.toString()}
+              value={month?.toString()}
               onValueChange={(value) => setMonth(Number.parseInt(value))}
             >
               <SelectTrigger id="month-select">
-                <SelectValue>{months[month]}</SelectValue>
+                <SelectValue>
+                  {months[month ?? new Date().getMonth()]}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {months.map((m, index) => (
