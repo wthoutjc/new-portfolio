@@ -49,9 +49,9 @@ class SkillsRepository {
     });
   }
 
-  create(createSkillDto: CreateSkillDto) {
+  create(data: CreateSkillDto) {
     return this.dbService.skills.create({
-      data: createSkillDto,
+      data,
     });
   }
 

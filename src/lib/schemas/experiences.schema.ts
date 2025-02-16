@@ -1,9 +1,5 @@
 import { z } from "zod";
-
-export const experienceSkillSchema = z.object({
-  experienceId: z.string(),
-  skillId: z.string(),
-});
+import { experienceSkillSchema } from "./skill.schema";
 
 export const experiencesSchema = z
   .object({

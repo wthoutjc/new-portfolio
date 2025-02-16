@@ -1,5 +1,5 @@
 export class CreateSkillDto {
   name!: string;
-  icon?: string;
-  description?: string;
+  description?: string | null;
+  icon?: string | null;
 }

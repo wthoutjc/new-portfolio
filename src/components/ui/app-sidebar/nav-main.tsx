@@ -39,8 +39,8 @@ export function NavMain() {
         },
         {
           id: "portfolio-projects",
-          name: "Proyectos",
-          url: "/system/projects",
+          name: "Educación",
+          url: "/system/education",
           module_id: "portfolio",
         },
         {
