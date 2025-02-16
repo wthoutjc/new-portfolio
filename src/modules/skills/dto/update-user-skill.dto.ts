@@ -1,4 +1,4 @@
-import { SkillLevel, SkillSource } from "@/lib/interfaces/skill";
+import { SkillLevel, SkillSource } from "@prisma/client";
 
 export class UpdateUserSkillDto {
   level?: SkillLevel;

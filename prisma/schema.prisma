@@ -42,19 +42,6 @@ model Experiences {
   experienceSkills ExperienceSkills[]
 }
 
-enum SkillLevel {
-  EXPERT
-  COMPETENT
-  BEGINNER
-  NO_EXPERIENCE
-}
-
-enum SkillSource {
-  EXPERIENCE
-  EDUCATION
-  SELF_TAUGHT
-}
-
 model Skills {
   id          String    @id @default(uuid()) @db.Char(36)
   name        String    @unique
@@ -114,4 +101,17 @@ model UsersSkills {
   @@unique([userId, skillId])
   @@index([userId])
   @@index([skillId])
+}
+
+enum SkillLevel {
+  EXPERT
+  COMPETENT
+  BEGINNER
+  NO_EXPERIENCE
+}
+
+enum SkillSource {
+  EXPERIENCE
+  EDUCATION
+  SELF_TAUGHT
 }
