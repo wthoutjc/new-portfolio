@@ -90,8 +90,6 @@ class ExperiencesRepository {
   }
 
   update(id: string, updateExperienceDto: UpdateExperienceDto) {
-    console.log({ id, updateExperienceDto });
-
     const data: Prisma.ExperiencesUpdateInput = {
       ...updateExperienceDto,
       multimedia:

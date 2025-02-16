@@ -80,7 +80,7 @@ const initialValues: Partial<z.infer<typeof experiencesSchema>> = {
   experienceSkills: [],
 };
 
-const ExperiencesForm = ({ experience }: Props) => {
+const ExperiencesForm = ({ experience, skills }: Props) => {
   const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user;
@@ -137,11 +137,6 @@ const ExperiencesForm = ({ experience }: Props) => {
   }, [state, router, mode]);
 
   useEffect(() => {
-    console.log({
-      currentlyWorking,
-      form,
-    });
-
     if (currentlyWorking) form.setValue("endDate", null);
   }, [currentlyWorking, form]);
 
@@ -387,9 +382,71 @@ const ExperiencesForm = ({ experience }: Props) => {
               )}
             />
 
+            {/* Experiences.experienceSkills */}
+            <FormField
+              control={form.control}
+              name="experienceSkills"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Habilidades</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={(skillId) => {
+                        const currentSkills = field.value || [];
+                        field.onChange([
+                          ...currentSkills,
+                          { skillId, experienceId: id || "" },
+                        ]);
+                      }}
+                      value=""
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione habilidades" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {skills.map((skill) => (
+                          <SelectItem key={skill.id} value={skill.id}>
+                            {skill.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {field.value?.map((expSkill) => {
+                      const skill = skills.find(
+                        (s) => s.id === expSkill.skillId
+                      );
+                      return (
+                        <div
+                          key={expSkill.skillId}
+                          className="flex items-center gap-2 rounded-md bg-secondary px-3 py-1"
+                        >
+                          <span>{skill?.name}</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              field.onChange(
+                                field.value?.filter(
+                                  (s) => s.skillId !== expSkill.skillId
+                                )
+                              );
+                            }}
+                            className="text-destructive hover:text-destructive/90"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="flex justify-start">
-              {/* disabled={!!state} */}
-              <SubmitButton text="Guardar" />
+              <SubmitButton text="Guardar" disabled={!!state} />
             </div>
           </form>
         </Form>

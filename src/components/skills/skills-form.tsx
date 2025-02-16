@@ -95,26 +95,29 @@ const SkillsForm = ({ skill }: Props) => {
 
     if (state?.data) {
       toast.success(
-        `Skill ${mode === Crud.CREATE ? "creado" : "actualizado"} correctamente`
+        `Habilidad ${
+          mode === Crud.CREATE ? "creada" : "actualizada"
+        } correctamente`
       );
-      router.push("/system/skills");
+      router.refresh();
     }
-  }, [state, router, mode]);
+  }, [state, mode, router]);
+
   return (
     <Card className="m-3 mt-1 p-3 pt-1">
       <CardHeader>
         {mode === Crud.CREATE ? (
           <>
-            <CardTitle>Crear Skill</CardTitle>
+            <CardTitle>Crear Habilidad</CardTitle>
             <CardDescription>
-              Ingrese la información para crear un nuevo skill.
+              Ingrese la información para crear una nueva habilidad general.
             </CardDescription>
           </>
         ) : (
           <>
-            <CardTitle>Actualizar Skill</CardTitle>
+            <CardTitle>Actualizar Habilidad</CardTitle>
             <CardDescription>
-              Actualice la información del skill.
+              Actualice la información de la habilidad.
             </CardDescription>
           </>
         )}
@@ -172,9 +175,7 @@ const SkillsForm = ({ skill }: Props) => {
                 </FormItem>
               )}
             />
-            <div className="flex justify-start">
-              <SubmitButton text="Guardar" />
-            </div>
+            <SubmitButton text="Guardar" />
           </form>
         </Form>
       </CardContent>

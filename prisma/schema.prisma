@@ -11,27 +11,14 @@ model Users {
   id          String        @id @default(uuid()) @db.Char(36)
   email       String        @unique
   password    String
-  profile     Profiles?
   experiences Experiences[]
   deletedAt   DateTime?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   Educations  Educations[]
+  UsersSkills UsersSkills[]
 
   @@index([email], map: "email_users_idx")
-}
-
-model Profiles {
-  id         String   @id @default(uuid()) @db.Char(36)
-  userId     String   @unique @db.Char(36)
-  headline   String?
-  location   String?
-  multimedia Json // URLs de contenido multimedia
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  user          Users           @relation(fields: [userId], references: [id])
-  profileSkills ProfileSkills[]
 }
 
 model Experiences {
@@ -55,6 +42,19 @@ model Experiences {
   experienceSkills ExperienceSkills[]
 }
 
+enum SkillLevel {
+  EXPERT
+  COMPETENT
+  BEGINNER
+  NO_EXPERIENCE
+}
+
+enum SkillSource {
+  EXPERIENCE
+  EDUCATION
+  SELF_TAUGHT
+}
+
 model Skills {
   id          String    @id @default(uuid()) @db.Char(36)
   name        String    @unique
@@ -64,18 +64,8 @@ model Skills {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  profileSkills    ProfileSkills[]
+  usersSkills      UsersSkills[]
   experienceSkills ExperienceSkills[]
-}
-
-model ProfileSkills {
-  profileId String @db.Char(36)
-  skillId   String @db.Char(36)
-
-  profile Profiles @relation(fields: [profileId], references: [id])
-  skill   Skills   @relation(fields: [skillId], references: [id])
-
-  @@id([profileId, skillId])
 }
 
 model ExperienceSkills {
@@ -104,4 +94,24 @@ model Educations {
   updatedAt         DateTime  @updatedAt
 
   user Users @relation(fields: [userId], references: [id])
+}
+
+model UsersSkills {
+  id                String      @id @default(uuid()) @db.Char(36)
+  userId            String      @db.Char(36)
+  skillId           String      @db.Char(36)
+  level             SkillLevel
+  source            SkillSource
+  yearsOfExperience Float
+  sourceId          String?     @db.Char(36)
+  deletedAt         DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  user  Users  @relation(fields: [userId], references: [id])
+  skill Skills @relation(fields: [skillId], references: [id])
+
+  @@unique([userId, skillId])
+  @@index([userId])
+  @@index([skillId])
 }

@@ -18,7 +18,7 @@ class SkillsService {
     return this.skillsRepository.findOne(id);
   }
 
-  create(createSkillDto: CreateSkillDto) {
+  async create(createSkillDto: CreateSkillDto) {
     return this.skillsRepository.create(createSkillDto);
   }
 

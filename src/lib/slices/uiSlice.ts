@@ -1,7 +1,7 @@
 import { StateCreator } from "zustand";
 
 // Interfaces
-import { AlertDialog, Notification } from "@/lib/interfaces/ui";
+import { AlertDialog } from "@/lib/interfaces/ui";
 
 export const INITIAL_DIALOG: AlertDialog = {
   title: "",
@@ -12,21 +12,11 @@ export const INITIAL_DIALOG: AlertDialog = {
 
 interface UISlice {
   alertDialog: AlertDialog;
-  notifications: Notification[];
-  setNotifications: (notifications: Notification[]) => void;
   setAlertDialog: (alertDialog: AlertDialog) => void;
 }
 
 const createUISlice: StateCreator<UISlice> = (set) => ({
   alertDialog: INITIAL_DIALOG,
-  notifications: [],
-  setNotifications: (notifications: Notification[]) => {
-    set(() => {
-      return {
-        notifications,
-      };
-    });
-  },
   setAlertDialog: (alertDialog: AlertDialog) => {
     set(() => {
       return { alertDialog };

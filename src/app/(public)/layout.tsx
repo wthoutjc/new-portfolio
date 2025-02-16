@@ -1,6 +1,7 @@
 import { AppNavbar } from "@/components/ui/app-navbar/app-navbar";
 import { SideMe } from "@/components/ui/side-me/side-me";
 import { AppFooter } from "@/components/ui/app-footer/app-footer";
+import { AlertDialog } from "@/components/ui/alert-dialog/alert-dialog";
 
 export default function PublicLayout({
   children,
@@ -22,6 +23,7 @@ export default function PublicLayout({
         </div>
       </div>
       <AppFooter />
+      <AlertDialog />
     </div>
   );
 }

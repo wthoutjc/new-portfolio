@@ -15,6 +15,7 @@ import { redirect } from "next/navigation";
 
 // Auth
 import AuthProvider from "@/components/auth/session-provider";
+import { AlertDialog } from "@/components/ui/alert-dialog/alert-dialog";
 
 const ProtectedLayoutPage = async ({
   children,
@@ -41,6 +42,7 @@ const ProtectedLayoutPage = async ({
 
           {children}
         </SidebarInset>
+        <AlertDialog />
       </SidebarProvider>
     </AuthProvider>
   );

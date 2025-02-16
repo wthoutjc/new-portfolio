@@ -3,7 +3,6 @@ import "../styles/globals.css";
 import { Montserrat, Montserrat_Alternates } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { DynamicThemeProvider } from "@/components/themes/dynamic-theme-provider";
-import { AlertDialog } from "@/components/ui/alert-dialog/alert-dialog";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -40,7 +39,6 @@ export default function RootLayout({
         >
           {children}
           <Toaster />
-          <AlertDialog />
         </DynamicThemeProvider>
       </body>
     </html>

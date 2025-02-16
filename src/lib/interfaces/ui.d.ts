@@ -28,10 +28,3 @@ export interface TypesIdentification {
   id: string;
   name: string;
 }
-
-export interface Notification {
-  id: string;
-  title: string;
-  description: string;
-  severity: Severity;
-}

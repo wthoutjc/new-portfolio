@@ -1,0 +1,12 @@
+export enum SkillLevel {
+  EXPERT = "EXPERT",
+  COMPETENT = "COMPETENT",
+  BEGINNER = "BEGINNER",
+  NO_EXPERIENCE = "NO_EXPERIENCE",
+}
+
+export enum SkillSource {
+  EXPERIENCE = "EXPERIENCE",
+  EDUCATION = "EDUCATION",
+  SELF_TAUGHT = "SELF_TAUGHT",
+}

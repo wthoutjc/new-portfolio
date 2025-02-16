@@ -21,10 +21,6 @@ interface Props {
 }
 
 export function AppCalendar({ selected, onSelect, disabled }: Props) {
-  console.log({
-    selected,
-  });
-
   const [date, setDate] = useState<Date | undefined>(selected);
   const [year, setYear] = useState<number | undefined>(date?.getFullYear());
   const [month, setMonth] = useState<number | undefined>(date?.getMonth());
