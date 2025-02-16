@@ -1,13 +1,14 @@
-import { FormState } from "../enums/form-state.enum";
+import { Auth } from "../interfaces/auth";
 import { AuthSchema } from "../schemas/auth.schema";
 
 // NextAuth
 import { signIn as nextSignIn, signOut as nextSignOut } from "next-auth/react";
+import { ActionState } from "../types/action.type";
 
 export async function signIn(
-  _: FormState,
+  _: ActionState<Auth>,
   formData: FormData
-): Promise<FormState> {
+): Promise<ActionState<Auth>> {
   const { success, data, error } = AuthSchema.safeParse({
     username: formData.get("username"),
     password: formData.get("password"),
