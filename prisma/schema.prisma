@@ -16,6 +16,7 @@ model Users {
   deletedAt   DateTime?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  Educations  Educations[]
 
   @@index([email], map: "email_users_idx")
 }
@@ -85,4 +86,22 @@ model ExperienceSkills {
   skill      Skills      @relation(fields: [skillId], references: [id])
 
   @@id([experienceId, skillId])
+}
+
+model Educations {
+  id                String    @id @default(uuid()) @db.Char(36)
+  userId            String    @db.Char(36)
+  title             String // Título obtenido
+  institution       String // Nombre de la institución
+  educationType     String // Tipo de educación (pregrado, posgrado, etc)
+  startDate         DateTime
+  endDate           DateTime?
+  currentlyStudying Boolean   @default(false)
+  description       String?   @db.LongText
+  multimedia        Json // URLs de contenido multimedia (diplomas, certificados)
+  deletedAt         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  user Users @relation(fields: [userId], references: [id])
 }
