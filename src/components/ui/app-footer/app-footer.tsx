@@ -16,7 +16,7 @@ const AppFooter = () => {
               <p className="text-sm">GitHub</p>
             </Link>
             <Link
-              href="linkedin.com/in/juan-camilo-ramirez/"
+              href="https://www.linkedin.com/in/juan-camilo-ramirez/"
               target="_blank"
               className="hover:text-blue-600 transition-colors"
             >

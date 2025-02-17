@@ -109,7 +109,7 @@ const SideMe = () => {
               <p>GitHub</p>
             </Link>
             <Link
-              href="https://drive.google.com/file/d/1HTYe6vwNlGoSwT_pOVuxZS_lz6Yh3r-_/view?usp=sharing"
+              href="https://drive.google.com/file/d/1hUq9fj4jBzwL9ME-4gDELCsTar5ccA3s/view?usp=sharing"
               className="flex md:text-xs lg:text-sm hover:underline mt-2"
             >
               <svg
