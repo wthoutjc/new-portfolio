@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${montserrat.variable} ${montserratAlternates.variable} antialiased`}
+        className={`${montserrat.variable} ${montserratAlternates.variable} antialiased flex flex-col`}
       >
         <DynamicThemeProvider
           attribute="class"

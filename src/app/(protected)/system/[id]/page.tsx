@@ -20,7 +20,7 @@ export default async function SystemExperiencePage({ params }: Props) {
 
   const { data: skills } = await skillsService.findAll({
     page: 1,
-    take: 10,
+    take: 100,
   });
 
   return <ExperiencesForm skills={skills} experience={experience} />;

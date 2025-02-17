@@ -43,7 +43,7 @@ class ExperiencesRepository {
         skip: (page - 1) * take,
         take,
         orderBy: {
-          startDate: "asc",
+          startDate: "desc",
         },
       });
 
@@ -97,18 +97,23 @@ class ExperiencesRepository {
           ? Prisma.JsonNull
           : updateExperienceDto.multimedia,
       experienceSkills: {
-        connect: updateExperienceDto.experienceSkills?.map((skillDto) => ({
-          experienceId_skillId: {
-            experienceId: id,
-            skillId: skillDto.skillId,
-          },
-        })),
+        deleteMany: {},
+        ...(updateExperienceDto.experienceSkills?.length
+          ? {
+              create: updateExperienceDto.experienceSkills.map((skillDto) => ({
+                skill: { connect: { id: skillDto.skillId } },
+              })),
+            }
+          : {}),
       },
     };
 
     return this.dbService.experiences.update({
       where: { id },
       data,
+      include: {
+        experienceSkills: true,
+      },
     });
   }
 

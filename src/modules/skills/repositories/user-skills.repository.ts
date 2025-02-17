@@ -40,10 +40,15 @@ class UserSkillsRepository {
         where,
         select: {
           id: true,
+          userId: true,
+          skillId: true,
           level: true,
           source: true,
           yearsOfExperience: true,
           sourceId: true,
+          deletedAt: true,
+          createdAt: true,
+          updatedAt: true,
           skill: {
             select: {
               id: true,

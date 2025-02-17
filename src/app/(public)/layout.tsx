@@ -14,10 +14,7 @@ export default function PublicLayout({
       <div className="flex flex-[1_0_auto] justify-center">
         <div className="flex flex-col max-w-7xl w-full md:flex-row">
           <SideMe />
-          <div
-            className="flex flex-col p-3 md:pt-3 md:p-0 w-full md:w-3/4"
-            id="content"
-          >
+          <div className="flex flex-col p-3 md:pt-3 md:p-0 w-full md:w-3/4">
             {children}
           </div>
         </div>

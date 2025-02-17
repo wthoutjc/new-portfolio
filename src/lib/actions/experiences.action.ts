@@ -39,6 +39,9 @@ async function create<T>(
         ? null
         : new Date(formData.get("endDate") as string),
     currentlyWorking: formData.get("currentlyWorking") === "true",
+    experienceSkills: JSON.parse(
+      formData.get("experienceSkills")?.toString() || "[]"
+    ),
   });
 
   if (!success) {
@@ -90,6 +93,9 @@ async function update<T>(
         ? null
         : new Date(formData.get("endDate") as string),
     currentlyWorking: formData.get("currentlyWorking") === "true",
+    experienceSkills: JSON.parse(
+      formData.get("experienceSkills")?.toString() || "[]"
+    ),
   });
 
   if (!success) {

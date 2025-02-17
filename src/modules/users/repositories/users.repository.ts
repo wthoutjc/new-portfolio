@@ -9,12 +9,46 @@ export class UsersRepository {
   }
 
   findOne(unique: string) {
-    const where: Prisma.UsersWhereUniqueInput = isUUID(unique)
-      ? { id: unique }
-      : { email: unique };
+    const where: Prisma.UsersWhereInput = {
+      ...(isUUID(unique) ? { id: unique } : { email: unique }),
+      deletedAt: null,
+    };
 
-    return this.dbService.users.findUnique({
+    return this.dbService.users.findFirst({
       where,
+      include: {
+        experiences: {
+          where: {
+            deletedAt: null,
+          },
+          include: {
+            experienceSkills: true,
+          },
+          orderBy: [
+            {
+              currentlyWorking: "desc",
+            },
+            {
+              endDate: "asc",
+            },
+            {
+              startDate: "desc",
+            },
+          ],
+        },
+      },
+    });
+  }
+
+  findAll() {
+    return this.dbService.users.findMany({
+      where: {
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        email: true,
+      },
     });
   }
 }

@@ -66,7 +66,7 @@ import {
 import { toast } from "sonner";
 
 // Icons
-import { Trash } from "lucide-react";
+import { Trash, X } from "lucide-react";
 
 // Types
 import { ActionState } from "@/lib/types/action.type";
@@ -121,9 +121,16 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
     formData.append("id", id ?? "");
     formData.append("userId", user.id ?? "");
 
-    Object.entries(data).forEach(([key, value]) =>
+    // Manejar las habilidades por separado
+    const { experienceSkills, ...rest } = data;
+
+    // Agregar el resto de los datos
+    Object.entries(rest).forEach(([key, value]) =>
       formData.append(key, value?.toString() ?? "")
     );
+
+    // Agregar las habilidades como JSON
+    formData.append("experienceSkills", JSON.stringify(experienceSkills || []));
 
     startTransition(() => {
       formAction(formData);
@@ -419,10 +426,16 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
                     <Select
                       onValueChange={(skillId) => {
                         const currentSkills = field.value || [];
-                        field.onChange([
-                          ...currentSkills,
-                          { skillId, experienceId: id || "" },
-                        ]);
+                        if (
+                          !currentSkills.some(
+                            (skill) => skill.skillId === skillId
+                          )
+                        ) {
+                          field.onChange([
+                            ...currentSkills,
+                            { skillId, experienceId: id || "" },
+                          ]);
+                        }
                       }}
                       value=""
                     >
@@ -430,11 +443,18 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
                         <SelectValue placeholder="Seleccione habilidades" />
                       </SelectTrigger>
                       <SelectContent>
-                        {skills.map((skill) => (
-                          <SelectItem key={skill.id} value={skill.id}>
-                            {skill.name}
-                          </SelectItem>
-                        ))}
+                        {skills
+                          .filter((skill) => {
+                            const currentSkills = field.value || [];
+                            return !currentSkills.some(
+                              (expSkill) => expSkill.skillId === skill.id
+                            );
+                          })
+                          .map((skill) => (
+                            <SelectItem key={skill.id} value={skill.id}>
+                              {skill.name}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -448,9 +468,11 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
                           key={expSkill.skillId}
                           className="flex items-center gap-2 rounded-md bg-secondary px-3 py-1"
                         >
-                          <span>{skill?.name}</span>
-                          <button
+                          <span className="text-sm">{skill?.name}</span>
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="icon"
                             onClick={() => {
                               field.onChange(
                                 field.value?.filter(
@@ -460,8 +482,8 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
                             }}
                             className="text-destructive hover:text-destructive/90"
                           >
-                            ×
-                          </button>
+                            <X className="w-3 h-3" />
+                          </Button>
                         </div>
                       );
                     })}

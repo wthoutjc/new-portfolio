@@ -11,6 +11,18 @@ class EducationsRepository {
     this.dbService = db;
   }
 
+  findEducationsByUserId(userId: string) {
+    return this.dbService.educations.findMany({
+      where: {
+        userId,
+        deletedAt: null,
+      },
+      orderBy: {
+        startDate: "desc",
+      },
+    });
+  }
+
   findAll(findAllDto: FindAllDto) {
     const { contains, page, take } = findAllDto;
 

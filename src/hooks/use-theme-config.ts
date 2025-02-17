@@ -2,9 +2,9 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { getThemeConfig } from "../lib/themes/theme-config";
+import { getThemeConfig } from "@/components/themes/theme-config";
 import { ThemeConfig } from "../lib/interfaces/ui";
-import { Environment } from "../lib/types/ui.type";
+import { Environment, ThemeMode } from "../lib/types/ui.type";
 
 export const useThemeConfig = () => {
   const { theme } = useTheme();
@@ -19,7 +19,7 @@ export const useThemeConfig = () => {
     if (mounted && theme) {
       const environment = (process.env.NEXT_PUBLIC_ENVIRONMENT ||
         "development") as Environment;
-      const config = getThemeConfig(theme as any, environment);
+      const config = getThemeConfig(theme as ThemeMode, environment);
       setThemeConfig(config);
     }
   }, [theme, mounted]);

@@ -10,4 +10,8 @@ export class UsersService {
   findOne(unique: string) {
     return this.usersRepository.findOne(unique);
   }
+
+  findAll() {
+    return this.usersRepository.findAll();
+  }
 }

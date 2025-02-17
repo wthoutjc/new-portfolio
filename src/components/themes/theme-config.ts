@@ -1,6 +1,6 @@
-import { ThemeConfig } from "../interfaces/ui";
-import { ThemeMode } from "../types/ui.type";
-import { Environment } from "../types/ui.type";
+import { ThemeConfig } from "../../lib/interfaces/ui";
+import { ThemeMode } from "../../lib/types/ui.type";
+import { Environment } from "../../lib/types/ui.type";
 
 const lightThemeProd: ThemeConfig = {
   primary: "#0f172a",

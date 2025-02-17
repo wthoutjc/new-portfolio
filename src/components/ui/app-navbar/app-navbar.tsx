@@ -12,11 +12,6 @@ import { ModeToggle } from "../toggle-theme/toggle-theme";
 
 const items: { title: string; href: string; description: string }[] = [
   {
-    title: "Experiencia",
-    href: "/experience",
-    description: "Experiencia profesional",
-  },
-  {
     title: "Educación",
     href: "/education",
     description: "Formación académica",

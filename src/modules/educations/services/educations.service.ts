@@ -14,6 +14,10 @@ class EducationsService {
     return this.educationsRepository.findAll(findAllDto);
   }
 
+  findEducationsByUserId(userId: string) {
+    return this.educationsRepository.findEducationsByUserId(userId);
+  }
+
   findOne(id: string) {
     return this.educationsRepository.findOne(id);
   }

@@ -28,9 +28,10 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
   const [minute, setMinute] = useState<string>("00");
 
   const years = Array.from(
-    { length: 10 },
-    (_, i) => new Date().getFullYear() - 5 + i
+    { length: 50 },
+    (_, i) => new Date().getFullYear() - 40 + i
   );
+
   const months = [
     "Enero",
     "Febrero",
