@@ -18,4 +18,10 @@ export interface Experience {
 export interface ExperienceSkill {
   experienceId: string;
   skillId: string;
+  skill: {
+    id: string;
+    name: string;
+    icon: string | null;
+    description: string | null;
+  };
 }

@@ -2,21 +2,16 @@
 import { UserSkillsService } from "@/modules/skills/services/user-skills.service";
 import { userSkillSchema } from "@/lib/schemas/skill.schema";
 import { ActionState } from "@/lib/types/action.type";
-import { SkillLevel } from "@/lib/enums/skill.enum";
+import { calculateLevel } from "../utils/calculate-level";
 
 const userSkillsService = new UserSkillsService();
-
-function calculateLevel(yearsOfExperience: number): SkillLevel {
-  if (yearsOfExperience >= 3) return SkillLevel.EXPERT;
-  if (yearsOfExperience >= 1) return SkillLevel.COMPETENT;
-  if (yearsOfExperience > 0) return SkillLevel.BEGINNER;
-  return SkillLevel.NO_EXPERIENCE;
-}
 
 async function create<T>(
   _: ActionState<T>,
   formData: FormData
 ): Promise<ActionState<T>> {
+  console.log("create", formData);
+
   const userId = formData.get("userId")?.toString();
 
   if (!userId) {
@@ -37,6 +32,10 @@ async function create<T>(
     yearsOfExperience,
     level,
   });
+
+  console.log("success", success);
+  console.log("data", data);
+  console.log("error", error);
 
   if (!success) {
     return {

@@ -62,6 +62,7 @@ import { useUIStore } from "@/zustand/store";
 import { AlertDialog } from "@/lib/interfaces/ui";
 import { SkillsForm } from "./skills-form";
 import { INITIAL_DIALOG } from "@/lib/slices/uiSlice";
+import { calculateLevel } from "@/lib/utils/calculate-level";
 
 interface Props {
   userSkill?: UserSkill;
@@ -112,6 +113,8 @@ const UserSkillsForm = ({
     defaultValues,
   });
 
+  const yearsOfExperience = form.watch("yearsOfExperience");
+
   const selectedSource = form.watch("source");
 
   const openAlertDialog = () => {
@@ -128,6 +131,8 @@ const UserSkillsForm = ({
   };
 
   const onSubmit = form.handleSubmit((data) => {
+    console.log("user", user);
+
     if (!user) return;
 
     const formData = new FormData();
@@ -158,6 +163,8 @@ const UserSkillsForm = ({
   useEffect(() => {
     const generalState = state || stateRemove;
 
+    console.log("generalState", generalState);
+
     if (generalState?.errors) {
       toast.error(JSON.stringify(generalState.errors), TOAST_ERROR_STYLE);
     }
@@ -176,6 +183,12 @@ const UserSkillsForm = ({
       router.push("/system/skills");
     }
   }, [state, stateRemove, router, mode]);
+
+  useEffect(() => {
+    if (yearsOfExperience) {
+      form.setValue("level", calculateLevel(yearsOfExperience));
+    }
+  }, [yearsOfExperience, form]);
 
   return (
     <Card className="m-3 mt-1 p-3 pt-1">

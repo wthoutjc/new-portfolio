@@ -65,7 +65,11 @@ class ExperiencesRepository {
         deletedAt: null,
       },
       include: {
-        experienceSkills: true,
+        experienceSkills: {
+          include: {
+            skill: true,
+          },
+        },
       },
     });
   }

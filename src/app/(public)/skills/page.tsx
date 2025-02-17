@@ -22,5 +22,9 @@ export default async function SkillsPage() {
     user.id
   );
 
+  if (!userSkills.length) {
+    return <Error message="No hay habilidades registradas" />;
+  }
+
   return <SkillsTimeline userSkills={userSkills} />;
 }

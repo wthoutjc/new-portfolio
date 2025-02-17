@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 
@@ -61,6 +61,12 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
     return dayjs(date).locale("es").format("DD-MM-YYYY HH:mm");
   };
 
+  useEffect(() => {
+    if (year && month) {
+      setDate(new Date(year, month));
+    }
+  }, [year, month]);
+
   return (
     <div className="flex flex-col lg:flex-row w-full gap-4 lg:justify-between">
       <div className="w-full lg:w-1/3">
@@ -83,7 +89,10 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
             <Label htmlFor="year-select">Año</Label>
             <Select
               value={year?.toString()}
-              onValueChange={(value) => setYear(Number.parseInt(value))}
+              onValueChange={(value) => {
+                console.log("value", value);
+                setYear(Number.parseInt(value));
+              }}
             >
               <SelectTrigger id="year-select">
                 <SelectValue>{year?.toString()}</SelectValue>

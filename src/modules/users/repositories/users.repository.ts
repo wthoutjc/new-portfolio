@@ -22,17 +22,21 @@ export class UsersRepository {
             deletedAt: null,
           },
           include: {
-            experienceSkills: true,
+            experienceSkills: {
+              include: {
+                skill: true,
+              },
+            },
           },
           orderBy: [
             {
               currentlyWorking: "desc",
             },
             {
-              endDate: "asc",
+              startDate: "desc",
             },
             {
-              startDate: "desc",
+              endDate: "asc",
             },
           ],
         },

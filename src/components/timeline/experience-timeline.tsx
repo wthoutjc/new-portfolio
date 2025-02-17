@@ -11,13 +11,23 @@ interface TimelineProps {
 }
 
 export default function ExperienceTimeline({ experiences }: TimelineProps) {
-  const totalYears = experiences.reduce((acc, experience) => {
-    const startDate = new Date(experience.startDate);
-    const endDate = experience.endDate
-      ? new Date(experience.endDate)
-      : new Date();
-    return acc + (endDate.getFullYear() - startDate.getFullYear());
-  }, 0);
+  const totalYears = [...experiences]
+    .sort(
+      (a, b) =>
+        new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+    )
+    .reduce((acc, experience) => {
+      console.log("experience", {
+        startDate: experience.startDate.getFullYear(),
+        endDate: experience.endDate?.getFullYear(),
+      });
+
+      const startDate = new Date(experience.startDate);
+      const endDate = experience.endDate
+        ? new Date(experience.endDate)
+        : new Date();
+      return acc + (endDate.getFullYear() - startDate.getFullYear());
+    }, 1);
 
   return (
     <div className="space-y-12 relative">
@@ -26,7 +36,7 @@ export default function ExperienceTimeline({ experiences }: TimelineProps) {
         <p className="text-sm">{totalYears} años de experiencia</p>
       </div>
       <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary"></div>
-      {experiences.map((experience, index) => (
+      {[...experiences].map((experience, index) => (
         <motion.div
           key={experience.id}
           initial={{ opacity: 0, y: 50 }}
@@ -67,11 +77,13 @@ export default function ExperienceTimeline({ experiences }: TimelineProps) {
               )}
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 mb-4">{experience.description}</p>
+              <p className="mb-4 text-muted-foreground line-clamp-4 text-ellipsis overflow-hidden">
+                {experience.description}
+              </p>
               <div className="flex flex-wrap gap-2">
-                {experience.experienceSkills.map(({ skillId }) => (
-                  <Badge key={skillId} variant="secondary">
-                    {skillId}
+                {experience.experienceSkills.map(({ skill }) => (
+                  <Badge key={skill.id} variant="secondary">
+                    {skill.name}
                   </Badge>
                 ))}
               </div>
