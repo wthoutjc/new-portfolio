@@ -6,7 +6,7 @@ const AppFooter = () => {
       <div className="flex flex-col max-w-7xl w-full">
         {/* Sección de redes sociales */}
         <section className="flex space-x-4">
-          <h3 className="text-sm font-semibold mb-3">Conéctate conmigo:</h3>
+          <h3 className="text-sm font-semibold mb-3">Connect with me:</h3>
           <div className="flex gap-4">
             <Link
               href="https://github.com/wthoutjc"
@@ -28,9 +28,9 @@ const AppFooter = () => {
         {/* Sección de copyright */}
         <section className="mt-0">
           <p className="text-xs text-gray-600 dark:text-gray-300">
-            © 2024 IONJC. Todos los derechos reservados bajo la licencia MIT.
+            © 2024 IONJC. All rights reserved under the MIT license.
             <span className="ml-2">
-              Desarrollado con{" "}
+              Developed with{" "}
               <Link
                 href="https://nextjs.org/"
                 target="_blank"
