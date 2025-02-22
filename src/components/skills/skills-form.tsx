@@ -219,7 +219,8 @@ const SkillsForm = ({ skill }: Props) => {
                     variant="destructive"
                     onClick={handleRemove}
                   >
-                    Eliminar <Trash className="w-4 h-4" />
+                    <Trash className="w-4 h-4" />
+                    Delete
                   </Button>
                 </div>
               )}

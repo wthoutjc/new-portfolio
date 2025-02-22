@@ -1,13 +1,14 @@
 "use client";
-import type { Educations } from "@prisma/client";
+import { Education } from "@/lib/interfaces/education";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, BookOpenIcon, GraduationCapIcon } from "lucide-react";
 import { motion } from "motion/react";
-import Image from "next/image";
+import { MultimediaCarousel } from "../ui/multimedia-carousel/multimedia-carousel";
+import { MultimediaFile } from "@/lib/interfaces/multimedia";
 
 interface EducationTimelineProps {
-  educations: Educations[];
+  educations: Education[];
 }
 
 export default function EducationTimeline({
@@ -53,25 +54,30 @@ export default function EducationTimeline({
                   {education.description}
                 </p>
               )}
-              {education.multimedia && (
-                <div className="mt-4 grid grid-cols-2 gap-2">
-                  {Object.entries(
-                    education.multimedia as Record<string, string>
-                  ).map(([key, url]) => (
-                    <Image
-                      key={key}
-                      src={url || "/placeholder.svg"}
-                      alt={`${education.title} - ${key}`}
-                      className="rounded-md shadow-sm hover:shadow-md transition-shadow duration-200"
+              {education.multimedia &&
+                Array.isArray(education.multimedia) &&
+                education.multimedia.length > 0 && (
+                  <div className="w-full items-center justify-center md:hidden p-14">
+                    <MultimediaCarousel
+                      files={education.multimedia as MultimediaFile[]}
                     />
-                  ))}
-                </div>
-              )}
+                  </div>
+                )}
             </CardContent>
           </Card>
-          <div className="hidden md:flex w-8 md:w-1/2 items-center justify-center">
-            <div className="w-4 h-4 bg-primary rounded-full shadow-lg"></div>
-          </div>
+          {education.multimedia &&
+          Array.isArray(education.multimedia) &&
+          education.multimedia.length > 0 ? (
+            <div className="hidden md:flex w-8 md:w-1/2 p-20 items-end justify-end">
+              <MultimediaCarousel
+                files={education.multimedia as MultimediaFile[]}
+              />
+            </div>
+          ) : (
+            <div className="hidden md:flex w-8 md:w-1/2 justify-center items-center">
+              <div className="w-4 h-4 bg-primary rounded-full shadow-lg"></div>
+            </div>
+          )}
         </motion.div>
       ))}
     </div>

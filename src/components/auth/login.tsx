@@ -56,9 +56,9 @@ const Login = () => {
         </ul>
 
         <div className="flex flex-col gap-2 mt-2">
-          <CardTitle>Iniciar sesión</CardTitle>
+          <CardTitle>Sign in</CardTitle>
           <CardDescription>
-            Ingresa tu usuario y contraseña para acceder a la plataforma
+            Enter your username and password to access the platform
           </CardDescription>
         </div>
       </CardHeader>
@@ -66,11 +66,11 @@ const Login = () => {
         <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Usuario</Label>
-              <Input id="name" placeholder="Usuario" name="username" />
+              <Label htmlFor="name">Username</Label>
+              <Input id="name" placeholder="Username" name="username" />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Contraseña</Label>
+              <Label htmlFor="framework">Password</Label>
               <div className="flex">
                 <Input
                   type={show ? "text" : "password"}
@@ -92,7 +92,7 @@ const Login = () => {
 
             {state?.errors?.password && (
               <div className="text-xs text-red-500">
-                <p>Contraseña incorrecta</p>
+                <p>Incorrect password</p>
                 <ul>
                   {state.errors.password.map((error) => (
                     <li key={error}>* {error}</li>
@@ -104,7 +104,7 @@ const Login = () => {
         </CardContent>
 
         <CardFooter className="flex justify-between">
-          <SubmitButton text="Iniciar sesión" className="bg-primary" />
+          <SubmitButton text="Sign in" className="bg-primary" />
         </CardFooter>
       </form>
     </Card>

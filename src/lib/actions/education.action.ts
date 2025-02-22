@@ -150,7 +150,6 @@ async function update<T>(
         }
 
         if (response.data) {
-          console.log("response", response.data);
           const { url, key, name, type, size } = response.data;
           multimedia.push({
             url,

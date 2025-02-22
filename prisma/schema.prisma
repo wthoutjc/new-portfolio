@@ -33,7 +33,6 @@ model Experiences {
   endDate          DateTime?
   currentlyWorking Boolean   @default(false)
   description      String?   @db.LongText
-  multimedia       Json // URLs de contenido multimedia
   deletedAt        DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
@@ -75,7 +74,6 @@ model Educations {
   endDate           DateTime?
   currentlyStudying Boolean   @default(false)
   description       String?   @db.LongText
-  multimedia        Json // URLs de contenido multimedia (diplomas, certificados)
   deletedAt         DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt

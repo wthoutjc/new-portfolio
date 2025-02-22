@@ -18,8 +18,23 @@ class EducationsService {
     return this.educationsRepository.findAll(findAllDto);
   }
 
-  findEducationsByUserId(userId: string) {
-    return this.educationsRepository.findEducationsByUserId(userId);
+  async findEducationsByUserId(userId: string) {
+    const educations = await this.educationsRepository.findEducationsByUserId(
+      userId
+    );
+
+    // Obtener multimedia para cada educación
+    const educationsWithMultimedia = await Promise.all(
+      educations.map(async (education) => {
+        const multimedia = await this.multimediaService.findByEntity(
+          education.id,
+          "education"
+        );
+        return { ...education, multimedia };
+      })
+    );
+
+    return educationsWithMultimedia;
   }
 
   async findOne(id: string) {

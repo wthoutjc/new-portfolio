@@ -12,8 +12,8 @@ export const ICONS = {
 };
 
 export const LABEL_ICONS = {
-  [`${PermissionStates.READ}`]: "Ver",
-  [`${PermissionStates.UPDATE}`]: "Editar",
-  [`${PermissionStates.DELETE}`]: "Eliminar",
-  [`${PermissionStates.CREATE}`]: "Crear",
+  [`${PermissionStates.READ}`]: "View",
+  [`${PermissionStates.UPDATE}`]: "Edit",
+  [`${PermissionStates.DELETE}`]: "Delete",
+  [`${PermissionStates.CREATE}`]: "Create",
 };

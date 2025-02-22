@@ -1,13 +1,14 @@
 "use client";
-import Image from "next/image";
 import { motion } from "motion/react";
 
 // Components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { MultimediaCarousel } from "../ui/multimedia-carousel/multimedia-carousel";
 
 // Interfaces
 import { Experience } from "@/lib/interfaces/experience";
+import { JsonValue } from "@prisma/client/runtime/library";
 
 // Icons
 import {
@@ -20,6 +21,7 @@ import {
 // Dayjs
 import dayjs from "dayjs";
 import "dayjs/locale/es";
+import { MultimediaFile } from "@/lib/interfaces/multimedia";
 
 // Set locale
 dayjs.locale("es");
@@ -127,25 +129,48 @@ export default function ExperienceTimeline({ experiences }: TimelineProps) {
                     </Badge>
                   ))}
                 </div>
-                {experience.multimedia && (
-                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {Object.entries(
-                      experience.multimedia as Record<string, string>
-                    ).map(([key, url]) => (
-                      <Image
-                        key={key}
-                        src={url || "/placeholder.svg"}
-                        alt={`${experience.title} - ${key}`}
-                        className="rounded-md shadow-sm hover:shadow-md transition-shadow duration-200"
+                {experience.multimedia &&
+                  Array.isArray(experience.multimedia) &&
+                  experience.multimedia.length > 0 && (
+                    <div className="w-full items-center justify-center md:hidden p-14">
+                      <MultimediaCarousel
+                        files={experience.multimedia.map((file: JsonValue) => {
+                          const multimedia = file as unknown as MultimediaFile;
+                          return {
+                            url: multimedia.url,
+                            key: multimedia.key,
+                            name: multimedia.name,
+                            type: multimedia.type,
+                            size: multimedia.size,
+                          };
+                        })}
                       />
-                    ))}
-                  </div>
-                )}
+                    </div>
+                  )}
               </CardContent>
             </Card>
-            <div className="hidden md:flex w-8 md:w-1/2 items-center justify-center">
-              <div className="w-4 h-4 bg-primary rounded-full shadow-lg"></div>
-            </div>
+            {experience.multimedia &&
+            Array.isArray(experience.multimedia) &&
+            experience.multimedia.length > 0 ? (
+              <div className="hidden md:flex w-8 md:w-1/2 p-20 items-end justify-end">
+                <MultimediaCarousel
+                  files={experience.multimedia.map((file: JsonValue) => {
+                    const multimedia = file as unknown as MultimediaFile;
+                    return {
+                      url: multimedia.url,
+                      key: multimedia.key,
+                      name: multimedia.name,
+                      type: multimedia.type,
+                      size: multimedia.size,
+                    };
+                  })}
+                />
+              </div>
+            ) : (
+              <div className="hidden md:flex w-8 md:w-1/2 justify-center items-center">
+                <div className="w-4 h-4 bg-primary rounded-full shadow-lg"></div>
+              </div>
+            )}
           </motion.div>
         ))}
       </div>

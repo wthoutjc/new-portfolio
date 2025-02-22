@@ -1,5 +1,5 @@
 "use client";
-import { startTransition, useActionState, useEffect } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Auth
@@ -90,6 +90,7 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
   const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const mode = experience ? Crud.UPDATE : Crud.CREATE;
   const { id, multimedia, ...rest } = experience || {};
@@ -118,65 +119,81 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
   const currentlyWorking = form.watch("currentlyWorking");
 
   const onSubmit = form.handleSubmit(async (data) => {
-    if (!user) return;
+    try {
+      setIsSubmitting(true);
+      if (!user) return;
 
-    const formData = new FormData();
-    formData.append("id", id ?? "");
-    formData.append("userId", user.id ?? "");
+      const formData = new FormData();
+      formData.append("id", id ?? "");
+      formData.append("userId", user.id ?? "");
 
-    // Manejar multimedia por separado
-    const { multimedia, experienceSkills, ...rest } = data;
+      // Manejar multimedia por separado
+      const { multimedia, experienceSkills, ...rest } = data;
 
-    // Agregar el resto de los datos
-    Object.entries(rest).forEach(([key, value]) =>
-      formData.append(key, value?.toString() ?? "")
-    );
-
-    // Agregar las habilidades como JSON
-    formData.append("experienceSkills", JSON.stringify(experienceSkills || []));
-
-    // Verificar si hay cambios en multimedia
-    const hasMultimediaChanges =
-      mode === Crud.CREATE ||
-      JSON.stringify(multimedia) !== JSON.stringify(experience?.multimedia);
-
-    // Verificar si se están eliminando todos los archivos
-    const isDeletingAllFiles =
-      experience?.multimedia &&
-      Array.isArray(experience.multimedia) &&
-      experience.multimedia.length > 0 &&
-      (!multimedia || multimedia.length === 0);
-
-    // Agregar los archivos y sus metadatos
-    if (isDeletingAllFiles) {
-      // Si se están eliminando todos los archivos, enviar null explícitamente
-      formData.append("multimedia", "null");
-    } else if (multimedia?.length && hasMultimediaChanges) {
-      // Agregar el array de multimedia como JSON string
-      formData.append("multimedia", JSON.stringify(multimedia));
-
-      // Agregar los archivos físicos solo si son nuevos (tienen URL temporal)
-      for (const file of multimedia) {
-        if (file.url.startsWith("blob:") || file.url.includes("objecturl")) {
-          const response = await fetch(file.url);
-          const blob = await response.blob();
-          formData.append(
-            "files",
-            new File([blob], file.name, { type: file.type })
-          );
-        }
-      }
-    } else {
-      // Si no hay cambios, mantener la multimedia existente
-      formData.append(
-        "multimedia",
-        JSON.stringify(experience?.multimedia || null)
+      // Agregar el resto de los datos
+      Object.entries(rest).forEach(([key, value]) =>
+        formData.append(key, value?.toString() ?? "")
       );
-    }
 
-    startTransition(() => {
-      formAction(formData);
-    });
+      // Agregar las habilidades como JSON
+      formData.append(
+        "experienceSkills",
+        JSON.stringify(experienceSkills || [])
+      );
+
+      // Verificar si hay cambios en multimedia
+      const hasMultimediaChanges =
+        mode === Crud.CREATE ||
+        JSON.stringify(multimedia) !== JSON.stringify(experience?.multimedia);
+
+      // Verificar si se están eliminando todos los archivos
+      const isDeletingAllFiles =
+        experience?.multimedia &&
+        Array.isArray(experience.multimedia) &&
+        experience.multimedia.length > 0 &&
+        (!multimedia || multimedia.length === 0);
+
+      // Agregar los archivos y sus metadatos
+      if (isDeletingAllFiles) {
+        // Si se están eliminando todos los archivos, enviar null explícitamente
+        formData.append("multimedia", "null");
+      } else if (multimedia?.length && hasMultimediaChanges) {
+        // Agregar el array de multimedia como JSON string
+        formData.append("multimedia", JSON.stringify(multimedia));
+
+        // Agregar los archivos físicos solo si son nuevos (tienen URL temporal)
+        for (const file of multimedia) {
+          if (file.url.startsWith("blob:") || file.url.includes("objecturl")) {
+            try {
+              const response = await fetch(file.url);
+              const blob = await response.blob();
+              formData.append(
+                "files",
+                new File([blob], file.name, { type: file.type })
+              );
+            } catch (error) {
+              console.error(`Error processing file ${file.name}:`, error);
+              toast.error(
+                `Error al procesar el archivo ${file.name}`,
+                TOAST_ERROR_STYLE
+              );
+            }
+          }
+        }
+      } else {
+        // Si no hay cambios, mantener la multimedia existente
+        formData.append(
+          "multimedia",
+          JSON.stringify(experience?.multimedia || null)
+        );
+      }
+
+      startTransition(() => {
+        formAction(formData);
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   });
 
   const handleRemove = () => {
@@ -567,7 +584,11 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
 
             <div className="w-full flex justify-between">
               <div className="flex justify-start">
-                <SubmitButton text="Save" disabled={!!state} />
+                <SubmitButton
+                  text="Save"
+                  disabled={!!state || isSubmitting}
+                  loading={isSubmitting}
+                />
               </div>
 
               {experience && (
@@ -577,7 +598,8 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
                     variant="destructive"
                     onClick={handleRemove}
                   >
-                    Eliminar <Trash className="w-4 h-4" />
+                    <Trash className="w-4 h-4" />
+                    Delete
                   </Button>
                 </div>
               )}

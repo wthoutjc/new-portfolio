@@ -38,8 +38,7 @@ async function create<T>(
     // Solo procesar archivos si hay nuevos
     if (files.length) {
       multimedia = [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+      for (const file of files) {
         const fileFormData = new FormData();
         fileFormData.append("file", file);
 
@@ -78,16 +77,16 @@ async function create<T>(
 
     const experienceData = {
       title: formData.get("title"),
-      employmentType: formData.get("employmentType"),
       company: formData.get("company"),
-      location: formData.get("location"),
-      locationType: formData.get("locationType"),
+      employmentType: formData.get("employmentType"),
       startDate: new Date(formData.get("startDate") as string),
       endDate:
         formData.get("currentlyWorking") === "true"
           ? null
           : new Date(formData.get("endDate") as string),
       currentlyWorking: formData.get("currentlyWorking") === "true",
+      location: formData.get("location"),
+      locationType: formData.get("locationType"),
       description: formData.get("description"),
       experienceSkills: JSON.parse(
         formData.get("experienceSkills")?.toString() || "[]"
@@ -144,8 +143,7 @@ async function update<T>(
     // Solo procesar archivos si hay nuevos
     if (files.length) {
       multimedia = [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+      for (const file of files) {
         const fileFormData = new FormData();
         fileFormData.append("file", file);
 
@@ -184,16 +182,16 @@ async function update<T>(
 
     const experienceData = {
       title: formData.get("title"),
-      employmentType: formData.get("employmentType"),
       company: formData.get("company"),
-      location: formData.get("location"),
-      locationType: formData.get("locationType"),
+      employmentType: formData.get("employmentType"),
       startDate: new Date(formData.get("startDate") as string),
       endDate:
         formData.get("currentlyWorking") === "true"
           ? null
           : new Date(formData.get("endDate") as string),
       currentlyWorking: formData.get("currentlyWorking") === "true",
+      location: formData.get("location"),
+      locationType: formData.get("locationType"),
       description: formData.get("description"),
       experienceSkills: JSON.parse(
         formData.get("experienceSkills")?.toString() || "[]"

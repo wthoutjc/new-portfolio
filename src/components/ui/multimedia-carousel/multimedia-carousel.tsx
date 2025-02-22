@@ -123,9 +123,6 @@ const MultimediaCarousel = ({ files }: Props) => {
                   </div>
                 )}
               </div>
-              <p className="text-center text-sm text-muted-foreground mt-2">
-                {file.name}
-              </p>
             </div>
           </CarouselItem>
         ))}
