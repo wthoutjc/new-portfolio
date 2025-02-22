@@ -50,3 +50,5 @@ export default function RootLayout({
 // TODO: Arreglar que signOut limpie la session del usuario
 // TODO: Gráfico de pastel roto
 // TODO: Crear componente de carrusel para multimedia []
+// TODO: Se daño arreglar una experiencia FECHAS
+// TODO: Sensación de carga cuando se actualiza formulario
