@@ -45,10 +45,6 @@ export default function RootLayout({
   );
 }
 
-// TODO: Pasar todo el contenido de cara al usuario a inglés
-// TODO: Refactorizar userSkills para que se calcule automaticamente años de experiencia cuando se crea una nueva experiencia
 // TODO: Arreglar que el findAll de userSkill esta trayendo todos los datos y rompe la tabla
 // TODO: Implementar sincronización de archivos multimedia para las experiencias
 // TODO: Arreglar que signOut limpie la session del usuario
-// TODO: Agregar un mejor responsive para el timeline experience y el timeline education
-// TODO: Agregar animaciones super suaves para el timeline experience y el timeline education

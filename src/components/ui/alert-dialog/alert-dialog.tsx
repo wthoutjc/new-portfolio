@@ -26,16 +26,14 @@ const AlertDialog = () => {
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription className="whitespace-pre-line text-left text-primary">
-            {description}
-          </DialogDescription>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {children && <div className="grid gap-4 py-4">{children}</div>}
         <DialogFooter>
           {callback ? (
-            <Button onClick={callback}>Aceptar</Button>
+            <Button onClick={callback}>OK</Button>
           ) : (
-            <Button onClick={handleClose}>Aceptar</Button>
+            <Button onClick={handleClose}>OK</Button>
           )}
         </DialogFooter>
       </DialogContent>

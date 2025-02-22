@@ -34,6 +34,7 @@ export async function signIn(
 
 export const signOut = async () => {
   await nextSignOut({
-    callbackUrl: "/auth/login",
+    redirectTo: "/auth/login",
+    redirect: true,
   });
 };

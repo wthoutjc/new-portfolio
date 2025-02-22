@@ -27,38 +27,36 @@ const MeImageCard = () => {
   const handleShowModal = () => {
     const alertDialog: AlertDialog = {
       title: "Juan Camilo Ramírez Rátiva",
-      description: `🚀 About me:
-
-I am a dedicated Fullstack Developer with extensive expertise in AWS, Python, and TypeScript, committed to delivering innovative, efficient, and high-quality software solutions. I excel in applying advanced design principles and industry best practices to drive impactful results.
+      description: "🚀 About me:",
+      open: true,
+      children: (
+        <div className="flex flex-col items-center justify-center">
+          <MeImage className="rounded-full w-96 h-96 mb-10" />
+          <p className="whitespace-break-spaces text-left text-primary text-sm">
+            {`I am a dedicated Fullstack Developer with extensive expertise in AWS, Python, and TypeScript, committed to delivering innovative, efficient, and high-quality software solutions. I excel in applying advanced design principles and industry best practices to drive impactful results.
 
 🌟 Outstanding skills:
 
-     🏗 Architecture patterns : Experience in event-driven and resource-oriented patterns, optimizing
-     scalability and modularity.
+    🏗 Architecture patterns : Experience in event-driven and resource-oriented patterns, optimizing scalability and modularity.
 
-     ✅ Strong development practices: Applying SOLID principles and design patterns to ensure
-     maintainable and reusable code.
+    ✅ Strong development practices: Applying SOLID principles and design patterns to ensure maintainable and reusable code.
 
-     🔄 Agile methodologies: Leveraging frameworks like Scrum, Kanban, and XP to enhance team
-     productivity.
+    🔄 Agile methodologies: Leveraging frameworks like Scrum, Kanban, and XP to enhance team productivity.
 
-     🧑‍🏫 Training and mentoring: Training teams in best practices, technical decision-making, and
-     continuous improvement.
+    🧑‍🏫 Training and mentoring: Training teams in best practices, technical decision-making, and continuous improvement.
 
-     💡 Specialized support: Resolving complex issues and designing tailored solutions for infrastructure and
-     software.
+    💡 Specialized support: Resolving complex issues and designing tailored solutions for infrastructure and software.
 
-     🛠 Technical decision making: Evaluation of tools, technologies and strategies to ensure efficient and
-     effective solutions.
+    🛠 Technical decision making: Evaluation of tools, technologies and strategies to ensure efficient and effective solutions.
 
 📈 Experience and background:
 
-     🎓 Systems Engineer with Data Science certification, backed by a proven track record in delivering
-     complex solutions.
+    🎓 Systems Engineer with Data Science certification, backed by a proven track record in delivering complex solutions.
 
-I am always looking for new challenges and opportunities to keep growing and contributing to the success of innovative projects. 🚀`,
-      open: true,
-      children: <MeImage className="rounded-full w-96 h-96" />,
+I am always looking for new challenges and opportunities to keep growing and contributing to the success of innovative projects. 🚀`}
+          </p>
+        </div>
+      ),
     };
 
     setAlertDialog(alertDialog);
