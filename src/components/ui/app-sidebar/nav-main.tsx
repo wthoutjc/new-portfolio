@@ -26,26 +26,26 @@ export function NavMain() {
   const modules: Module[] = [
     {
       id: "portfolio",
-      name: "Gestion de portafolio",
+      name: "Portfolio management",
       url: null,
       is_active: true,
       icon: CodeXml,
       items: [
         {
           id: "portfolio-experiences",
-          name: "Experiencias",
+          name: "Experiences",
           url: "/system",
           module_id: "portfolio",
         },
         {
           id: "portfolio-projects",
-          name: "Educación",
+          name: "Educations",
           url: "/system/educations",
           module_id: "portfolio",
         },
         {
           id: "portfolio-skills",
-          name: "Habilidades",
+          name: "Skills",
           url: "/system/skills",
           module_id: "portfolio",
         },
@@ -55,7 +55,7 @@ export function NavMain() {
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Administración</SidebarGroupLabel>
+      <SidebarGroupLabel>System</SidebarGroupLabel>
       <SidebarMenu>
         {modules.map((module) => (
           <Collapsible

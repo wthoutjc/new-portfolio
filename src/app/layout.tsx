@@ -51,3 +51,4 @@ export default function RootLayout({
 // TODO: Implementar sincronización de archivos multimedia para las experiencias
 // TODO: Arreglar que signOut limpie la session del usuario
 // TODO: Agregar un mejor responsive para el timeline experience y el timeline education
+// TODO: Agregar animaciones super suaves para el timeline experience y el timeline education

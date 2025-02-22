@@ -3,11 +3,11 @@ import { AppTableProps } from "@/lib/interfaces/table";
 import { AppTable } from "@/components/ui/app-table/app-table";
 
 const EDUCATION_DICT = {
-  title: "Título",
-  institution: "Institución",
-  educationType: "Tipo de educación",
-  startDate: "Fecha de inicio",
-  endDate: "Fecha de finalización",
+  title: "Title",
+  institution: "Institution",
+  educationType: "Education type",
+  startDate: "Start date",
+  endDate: "End date",
 };
 
 interface Props {
@@ -38,11 +38,11 @@ export default async function EducationsPage({ searchParams }: Props) {
   });
 
   const dataTable: AppTableProps<(typeof data)[0]> = {
-    caption: "Educación",
+    caption: "Educations",
     data,
     count: total,
     header: EDUCATION_DICT,
-    title: "Educación",
+    title: "Educations",
   };
 
   return <AppTable {...dataTable} />;

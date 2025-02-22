@@ -142,13 +142,9 @@ const EducationsForm = ({ education }: Props) => {
 
     if (generalState?.data) {
       toast.success(
-        `Educación ${
-          stateRemove
-            ? "eliminada"
-            : mode === Crud.CREATE
-            ? "registrada"
-            : "actualizada"
-        } correctamente`,
+        `Education ${
+          stateRemove ? "deleted" : mode === Crud.CREATE ? "created" : "updated"
+        } correctly`,
         TOAST_SUCCESS_STYLE
       );
       router.push("/system/educations");
@@ -164,18 +160,16 @@ const EducationsForm = ({ education }: Props) => {
       <CardHeader>
         {mode === Crud.CREATE ? (
           <>
-            <CardTitle>Registrar Educación</CardTitle>
+            <CardTitle>Register Education</CardTitle>
             <CardDescription>
-              Por favor, complete el siguiente formulario para registrar su
-              educación.
+              Please complete the following form to register your education.
             </CardDescription>
           </>
         ) : (
           <>
-            <CardTitle>Actualizar Educación</CardTitle>
+            <CardTitle>Update Education</CardTitle>
             <CardDescription>
-              A continuación, se muestra la información de la educación
-              seleccionada.
+              Below is the information of the selected education.
             </CardDescription>
           </>
         )}
@@ -191,7 +185,7 @@ const EducationsForm = ({ education }: Props) => {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>
-                      Título <span className="text-red-500">*</span>
+                      Title <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={!!state} />
@@ -207,7 +201,7 @@ const EducationsForm = ({ education }: Props) => {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>
-                      Tipo de Educación <span className="text-red-500">*</span>
+                      Education Type <span className="text-red-500">*</span>
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -239,7 +233,7 @@ const EducationsForm = ({ education }: Props) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Institución <span className="text-red-500">*</span>
+                    Institution <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input type="text" {...field} disabled={!!state} />
@@ -262,7 +256,7 @@ const EducationsForm = ({ education }: Props) => {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Actualmente cursando</FormLabel>
+                    <FormLabel>Currently studying</FormLabel>
                   </div>
                 </FormItem>
               )}
@@ -275,7 +269,7 @@ const EducationsForm = ({ education }: Props) => {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>
-                      Fecha de Inicio <span className="text-red-500">*</span>
+                      Start Date <span className="text-red-500">*</span>
                     </FormLabel>
                     <AppCalendar
                       selected={field.value}
@@ -294,7 +288,7 @@ const EducationsForm = ({ education }: Props) => {
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>
-                        Fecha de Fin <span className="text-red-500">*</span>
+                        End Date <span className="text-red-500">*</span>
                       </FormLabel>
                       <AppCalendar
                         selected={field.value ?? undefined}
@@ -313,7 +307,7 @@ const EducationsForm = ({ education }: Props) => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descripción</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
@@ -328,7 +322,7 @@ const EducationsForm = ({ education }: Props) => {
 
             <div className="w-full flex justify-between">
               <div className="flex justify-start">
-                <SubmitButton text="Guardar" />
+                <SubmitButton text="Save" />
               </div>
 
               {education && (
@@ -338,7 +332,7 @@ const EducationsForm = ({ education }: Props) => {
                     variant="destructive"
                     onClick={handleRemove}
                   >
-                    Eliminar <Trash className="w-4 h-4" />
+                    Delete <Trash className="w-4 h-4" />
                   </Button>
                 </div>
               )}
@@ -350,8 +344,8 @@ const EducationsForm = ({ education }: Props) => {
       <CardFooter className="flex flex-col">
         <p className="text-sm text-gray-500 mb-3">
           <i>
-            Los campos marcados con <span className="text-red-500">*</span> son
-            obligatorios.
+            The fields marked with <span className="text-red-500">*</span> are
+            required.
           </i>
         </p>
       </CardFooter>

@@ -12,14 +12,14 @@ import { ModeToggle } from "../toggle-theme/toggle-theme";
 
 const items: { title: string; href: string; description: string }[] = [
   {
-    title: "Educación",
+    title: "Education",
     href: "/education",
-    description: "Formación académica",
+    description: "Academic formation",
   },
   {
-    title: "Habilidades",
+    title: "Skills",
     href: "/skills",
-    description: "Habilidades y tecnologías",
+    description: "Skills and technologies",
   },
 ];
 

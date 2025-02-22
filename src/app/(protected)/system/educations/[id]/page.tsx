@@ -14,6 +14,6 @@ export default async function EducationPage({ params }: Props) {
   const educationService = new EducationsService();
   const education = await educationService.findOne(id);
 
-  if (!education) return <Error message="Educación no encontrada" />;
+  if (!education) return <Error message="Education not found" />;
   return <EducationsForm education={education} />;
 }

@@ -28,7 +28,8 @@ const AppFooter = () => {
         {/* Sección de copyright */}
         <section className="mt-0">
           <p className="text-xs text-gray-600 dark:text-gray-300">
-            © 2024 IONJC. All rights reserved under the MIT license.
+            © {new Date().getFullYear()} IONJC. All rights reserved under the
+            MIT license.
             <span className="ml-2">
               Developed with{" "}
               <Link

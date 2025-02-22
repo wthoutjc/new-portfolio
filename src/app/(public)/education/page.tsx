@@ -10,12 +10,12 @@ const usersService = new UsersService();
 export default async function EducationPage() {
   const user = await usersService.findOne(DEFAULT_USER);
   if (!user) {
-    return <Error message="No se encontró el usuario" />;
+    return <Error message="User not found" />;
   }
 
   const educations = await educationService.findEducationsByUserId(user.id);
   if (!educations.length) {
-    return <Error message="No se encontró la educación del usuario" />;
+    return <Error message="No education found for the user" />;
   }
 
   return <EducationTimeline educations={educations} />;

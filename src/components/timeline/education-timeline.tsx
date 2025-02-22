@@ -14,19 +14,19 @@ export default function EducationTimeline({
   educations,
 }: EducationTimelineProps) {
   return (
-    <div className="space-y-12 relative">
-      <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary"></div>
+    <div className="space-y-8 relative">
+      <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-secondary"></div>
       {educations.map((education, index) => (
         <motion.div
           key={education.id}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
-          className={`flex ${
-            index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+          className={`flex flex-col md:flex-row ${
+            index % 2 === 0 ? "md:flex-row-reverse" : ""
           }`}
         >
-          <Card className={`w-1/2 ${index % 2 === 0 ? "mr-8" : "ml-8"}`}>
+          <Card className="w-full md:w-[calc(50%-1rem)] mb-4 md:mb-0">
             <CardHeader className="relative">
               <div className="absolute top-0 right-0 -mt-2 -mr-2">
                 <GraduationCapIcon className="w-8 h-8 text-primary" />
@@ -34,11 +34,11 @@ export default function EducationTimeline({
               <CardTitle className="text-xl font-bold text-primary">
                 {education.title}
               </CardTitle>
-              <div className="text-sm text-gray-500 flex items-center">
+              <div className="text-sm flex items-center">
                 <BookOpenIcon className="w-4 h-4 mr-1" />
                 {education.institution}
               </div>
-              <div className="text-sm text-gray-500 flex items-center">
+              <div className="text-sm flex items-center">
                 <CalendarIcon className="w-4 h-4 mr-1" />
                 {new Date(education.startDate).getFullYear()} -
                 {education.endDate
@@ -49,7 +49,7 @@ export default function EducationTimeline({
             <CardContent>
               <Badge variant="outline">{education.educationType}</Badge>
               {education.description && (
-                <p className="mt-2 text-sm text-gray-700">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {education.description}
                 </p>
               )}
@@ -69,7 +69,7 @@ export default function EducationTimeline({
               )}
             </CardContent>
           </Card>
-          <div className="w-1/2 flex items-center justify-center">
+          <div className="hidden md:flex w-8 md:w-1/2 items-center justify-center">
             <div className="w-4 h-4 bg-primary rounded-full shadow-lg"></div>
           </div>
         </motion.div>

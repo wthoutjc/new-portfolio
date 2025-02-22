@@ -68,14 +68,14 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <Card className="col-span-full">
         <CardHeader>
-          <CardTitle>Resumen de habilidades</CardTitle>
+          <CardTitle>Skills Overview</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px]">
+          <div className="h-[300px] sm:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={radarData}>
                 <PolarGrid />
-                <PolarAngleAxis dataKey="skill" />
+                <PolarAngleAxis dataKey="skill" tick={{ fontSize: 10 }} />
                 <PolarRadiusAxis angle={30} domain={[0, 4]} />
                 <Radar
                   name="Skill Level"
@@ -92,14 +92,19 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
 
       <Card className="col-span-full md:col-span-1 lg:col-span-2">
         <CardHeader>
-          <CardTitle>Años de experiencia (Top 10)</CardTitle>
+          <CardTitle>Years of Experience (Top 10)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px]">
+          <div className="h-[300px] sm:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData} layout="vertical">
                 <XAxis type="number" />
-                <YAxis dataKey="skill" type="category" width={150} />
+                <YAxis
+                  dataKey="skill"
+                  type="category"
+                  width={100}
+                  tick={{ fontSize: 10 }}
+                />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="years" fill="#8884d8" />
@@ -111,10 +116,10 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Habilidades por fuente</CardTitle>
+          <CardTitle>Skills by Source</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px]">
+          <div className="h-[300px] sm:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -122,16 +127,12 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={80}
+                  outerRadius="80%"
                   fill="#8884d8"
                   dataKey="value"
-                  label={({
-                    name,
-                    percent,
-                  }: {
-                    name: string;
-                    percent: number;
-                  }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
                 >
                   {pieData.map((entry, index) => (
                     <Cell
@@ -154,7 +155,11 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
         <CardContent>
           <div className="flex flex-wrap gap-2">
             {userSkills.map((userSkill) => (
-              <Badge key={userSkill.id} variant="secondary" className="text-sm">
+              <Badge
+                key={userSkill.id}
+                variant="secondary"
+                className="text-xs sm:text-sm mb-2"
+              >
                 {userSkill.skill.name} - {userSkill.level} (
                 {userSkill.yearsOfExperience} years)
               </Badge>

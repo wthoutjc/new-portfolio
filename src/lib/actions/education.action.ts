@@ -14,7 +14,7 @@ async function create<T>(
   if (!userId) {
     return {
       errors: {
-        userId: ["No se pudo obtener el usuario"],
+        userId: ["User not found"],
       },
     };
   }
@@ -40,7 +40,7 @@ async function create<T>(
 
   if (!data) {
     return {
-      errors: { id: ["Error al crear la educación"] },
+      errors: { id: ["Error creating education"] },
     };
   }
 
@@ -59,7 +59,7 @@ async function update<T>(
   if (!id) {
     return {
       errors: {
-        id: ["No se pudo obtener el id de la educación"],
+        id: ["Id not found"],
       },
     };
   }
@@ -85,7 +85,7 @@ async function update<T>(
 
   if (!data) {
     return {
-      errors: { id: ["Error al actualizar la educación"] },
+      errors: { id: ["Error updating education"] },
     };
   }
 
@@ -103,7 +103,7 @@ async function remove<T>(
 
   if (!id) {
     return {
-      errors: { id: ["No se pudo obtener el id de la educación"] },
+      errors: { id: ["Id not found"] },
     };
   }
 

@@ -294,10 +294,10 @@ const UserSkillsForm = ({
                       {Object.values(SkillSource).map((source) => (
                         <SelectItem key={source} value={source}>
                           {source === SkillSource.EXPERIENCE
-                            ? "Experiencia"
+                            ? "Experience"
                             : source === SkillSource.EDUCATION
-                            ? "Educación"
-                            : "Autodidacta"}
+                            ? "Education"
+                            : "Self-taught"}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -315,8 +315,8 @@ const UserSkillsForm = ({
                   <FormItem>
                     <FormLabel>
                       {selectedSource === SkillSource.EXPERIENCE
-                        ? "Experiencia"
-                        : "Educación"}{" "}
+                        ? "Experience"
+                        : "Education"}{" "}
                       <span className="text-red-500">*</span>
                     </FormLabel>
                     <Select
@@ -329,8 +329,8 @@ const UserSkillsForm = ({
                           <SelectValue
                             placeholder={`Seleccione una ${
                               selectedSource === SkillSource.EXPERIENCE
-                                ? "experiencia"
-                                : "educación"
+                                ? "experience"
+                                : "education"
                             }`}
                           />
                         </SelectTrigger>
@@ -364,7 +364,7 @@ const UserSkillsForm = ({
                     variant="destructive"
                     onClick={handleRemove}
                   >
-                    Eliminar <Trash className="w-4 h-4" />
+                    Delete <Trash className="w-4 h-4" />
                   </Button>
                 </div>
               )}
@@ -375,8 +375,8 @@ const UserSkillsForm = ({
       <CardFooter className="flex flex-col">
         <p className="text-sm text-gray-500">
           <i>
-            Los campos marcados con <span className="text-red-500">*</span> son
-            obligatorios.
+            The fields marked with <span className="text-red-500">*</span> are
+            required.
           </i>
         </p>
       </CardFooter>
