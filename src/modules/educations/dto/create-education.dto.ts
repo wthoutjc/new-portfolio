@@ -1,10 +1,12 @@
+import { CreateMultimediaDto } from "@/modules/multimedia/dto/create-multimedia.dto";
+
 export class CreateEducationDto {
   title!: string;
   institution!: string;
   educationType!: string;
   startDate!: Date;
-  endDate?: Date | null;
+  endDate!: Date | null;
   currentlyStudying!: boolean;
   description?: string | null;
-  multimedia?: string[];
+  multimedia?: Omit<CreateMultimediaDto, "entityId" | "entityType">[] | null;
 }

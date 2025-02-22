@@ -89,10 +89,7 @@ export function AppCalendar({ selected, onSelect, disabled }: Props) {
             <Label htmlFor="year-select">Año</Label>
             <Select
               value={year?.toString()}
-              onValueChange={(value) => {
-                console.log("value", value);
-                setYear(Number.parseInt(value));
-              }}
+              onValueChange={(value) => setYear(Number.parseInt(value))}
             >
               <SelectTrigger id="year-select">
                 <SelectValue>{year?.toString()}</SelectValue>

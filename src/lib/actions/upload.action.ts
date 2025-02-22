@@ -62,11 +62,12 @@ async function upload<T>(
       lastModified: file.lastModified,
     };
 
-    const url = await s3Service.uploadFile(uploadFileDto);
+    const { url, key } = await s3Service.uploadFile(uploadFileDto);
 
     return {
       data: {
         url,
+        key,
         name: file.name,
         type: file.type,
         size: file.size,

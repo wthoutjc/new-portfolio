@@ -131,8 +131,6 @@ const UserSkillsForm = ({
   };
 
   const onSubmit = form.handleSubmit((data) => {
-    console.log("user", user);
-
     if (!user) return;
 
     const formData = new FormData();
@@ -162,8 +160,6 @@ const UserSkillsForm = ({
 
   useEffect(() => {
     const generalState = state || stateRemove;
-
-    console.log("generalState", generalState);
 
     if (generalState?.errors) {
       toast.error(JSON.stringify(generalState.errors), TOAST_ERROR_STYLE);
@@ -354,7 +350,7 @@ const UserSkillsForm = ({
 
             <div className="w-full flex justify-between">
               <div className="flex justify-start">
-                <SubmitButton text="Guardar" />
+                <SubmitButton text="Save" />
               </div>
 
               {userSkill && (

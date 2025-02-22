@@ -1,6 +1,7 @@
-import { CreateExperienceSkillDto } from "./create-experience.dto";
+import { CreateMultimediaDto } from "@/modules/multimedia/dto/create-multimedia.dto";
+import { CreateExperienceDto } from "./create-experience.dto";
 
-export class UpdateExperienceDto {
+export class UpdateExperienceDto implements Partial<CreateExperienceDto> {
   title?: string;
   employmentType?: string | null;
   company?: string;
@@ -10,6 +11,6 @@ export class UpdateExperienceDto {
   endDate?: Date | null;
   currentlyWorking?: boolean;
   description?: string | null;
-  multimedia?: string[] | null;
-  experienceSkills?: CreateExperienceSkillDto[] | null;
+  experienceSkills?: { experienceId: string; skillId: string }[] | null;
+  multimedia?: Omit<CreateMultimediaDto, "entityId" | "entityType">[] | null;
 }

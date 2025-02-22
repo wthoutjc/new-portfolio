@@ -10,8 +10,6 @@ async function create<T>(
   _: ActionState<T>,
   formData: FormData
 ): Promise<ActionState<T>> {
-  console.log("create", formData);
-
   const userId = formData.get("userId")?.toString();
 
   if (!userId) {
@@ -32,10 +30,6 @@ async function create<T>(
     yearsOfExperience,
     level,
   });
-
-  console.log("success", success);
-  console.log("data", data);
-  console.log("error", error);
 
   if (!success) {
     return {

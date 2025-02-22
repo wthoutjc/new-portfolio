@@ -209,7 +209,7 @@ const SkillsForm = ({ skill }: Props) => {
             />
             <div className="w-full flex justify-between">
               <div className="flex justify-start">
-                <SubmitButton text="Guardar" />
+                <SubmitButton text="Save" />
               </div>
 
               {skill && (

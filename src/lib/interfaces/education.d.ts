@@ -1,4 +1,4 @@
-import { JsonValue } from "@prisma/client/runtime/library";
+import { MultimediaFile } from "./multimedia";
 
 export interface Education {
   id: string;
@@ -9,5 +9,5 @@ export interface Education {
   endDate: Date | null;
   currentlyStudying: boolean;
   description: string | null;
-  multimedia: JsonValue;
+  multimedia: MultimediaFile[] | null;
 }

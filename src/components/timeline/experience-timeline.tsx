@@ -35,11 +35,6 @@ export default function ExperienceTimeline({ experiences }: TimelineProps) {
         new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
     )
     .reduce((acc, experience) => {
-      console.log("experience", {
-        startDate: experience.startDate.getFullYear(),
-        endDate: experience.endDate?.getFullYear(),
-      });
-
       const startDate = new Date(experience.startDate);
       const endDate = experience.endDate
         ? new Date(experience.endDate)

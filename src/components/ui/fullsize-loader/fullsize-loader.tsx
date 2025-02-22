@@ -6,7 +6,7 @@ interface LoaderProps {
 }
 
 const FullsizeLoader = ({
-  text = "Cargando...",
+  text = "Loading...",
   size = "medium",
 }: LoaderProps) => {
   const sizeClasses = {

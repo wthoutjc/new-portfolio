@@ -33,6 +33,8 @@ import { Checkbox } from "../ui/checkbox";
 import { AppCalendar } from "@/components/ui/app-calendar/app-calendar";
 import { SubmitButton } from "../ui/submit-button/submit-button";
 import { Button } from "../ui/button";
+import { FileUpload } from "../ui/file-upload/file-upload";
+import { MultimediaCarousel } from "../ui/multimedia-carousel/multimedia-carousel";
 
 // Hooks y validación
 import { useForm } from "react-hook-form";
@@ -72,8 +74,10 @@ const initialValues: Partial<z.infer<typeof educationsSchema>> = {
   institution: "",
   educationType: "",
   startDate: new Date(),
+  endDate: null,
   currentlyStudying: false,
-  description: "",
+  description: null,
+  multimedia: null,
 };
 
 const EducationsForm = ({ education }: Props) => {
@@ -117,16 +121,58 @@ const EducationsForm = ({ education }: Props) => {
     });
   };
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     if (!user) return;
 
     const formData = new FormData();
     formData.append("id", id ?? "");
     formData.append("userId", user.id ?? "");
 
-    Object.entries(data).forEach(([key, value]) =>
+    // Manejar multimedia por separado
+    const { multimedia, ...rest } = data;
+
+    // Agregar el resto de los datos
+    Object.entries(rest).forEach(([key, value]) =>
       formData.append(key, value?.toString() ?? "")
     );
+
+    // Verificar si hay cambios en multimedia
+    const hasMultimediaChanges =
+      mode === Crud.CREATE ||
+      JSON.stringify(multimedia) !== JSON.stringify(education?.multimedia);
+
+    // Verificar si se están eliminando todos los archivos
+    const isDeletingAllFiles =
+      education?.multimedia &&
+      education.multimedia.length > 0 &&
+      (!multimedia || multimedia.length === 0);
+
+    // Agregar los archivos y sus metadatos
+    if (isDeletingAllFiles) {
+      // Si se están eliminando todos los archivos, enviar null explícitamente
+      formData.append("multimedia", "null");
+    } else if (multimedia?.length && hasMultimediaChanges) {
+      // Agregar el array de multimedia como JSON string
+      formData.append("multimedia", JSON.stringify(multimedia));
+
+      // Agregar los archivos físicos solo si son nuevos (tienen URL temporal)
+      for (const file of multimedia) {
+        if (file.url.startsWith("blob:") || file.url.includes("objecturl")) {
+          const response = await fetch(file.url);
+          const blob = await response.blob();
+          formData.append(
+            "files",
+            new File([blob], file.name, { type: file.type })
+          );
+        }
+      }
+    } else {
+      // Si no hay cambios, mantener la multimedia existente
+      formData.append(
+        "multimedia",
+        JSON.stringify(education?.multimedia || null)
+      );
+    }
 
     startTransition(() => {
       formAction(formData);
@@ -313,6 +359,35 @@ const EducationsForm = ({ education }: Props) => {
                       {...field}
                       disabled={!!state}
                       value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="multimedia"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Archivos multimedia</FormLabel>
+                  {field.value && field.value.length > 0 && (
+                    <MultimediaCarousel files={field.value} />
+                  )}
+                  <FormControl>
+                    <FileUpload
+                      onChange={(files) => field.onChange(files)}
+                      value={field.value}
+                      disabled={!!state}
+                      maxFiles={5}
+                      accept={{
+                        "image/*": [".png", ".jpg", ".jpeg", ".gif"],
+                        "application/pdf": [".pdf"],
+                        "application/msword": [".doc"],
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                          [".docx"],
+                      }}
                     />
                   </FormControl>
                   <FormMessage />

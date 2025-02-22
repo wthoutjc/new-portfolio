@@ -1,3 +1,5 @@
+import { CreateMultimediaDto } from "@/modules/multimedia/dto/create-multimedia.dto";
+
 export class UpdateEducationDto {
   title?: string;
   institution?: string;
@@ -6,5 +8,5 @@ export class UpdateEducationDto {
   endDate?: Date | null;
   currentlyStudying?: boolean;
   description?: string | null;
-  multimedia?: string[] | null;
+  multimedia?: Omit<CreateMultimediaDto, "entityId" | "entityType">[] | null;
 }

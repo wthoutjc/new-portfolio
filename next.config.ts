@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
       {
         hostname: "res.cloudinary.com",
       },
+      {
+        hostname: `${process.env.AWS_BUCKET_NAME}.s3.sa-east-1.amazonaws.com`,
+      },
+      {
+        hostname: `${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com`,
+      },
     ],
   },
 };

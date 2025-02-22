@@ -35,6 +35,8 @@ import { Checkbox } from "../ui/checkbox";
 import { AppCalendar } from "@/components/ui/app-calendar/app-calendar";
 import { SubmitButton } from "../ui/submit-button/submit-button";
 import { Button } from "../ui/button";
+import { FileUpload } from "../ui/file-upload/file-upload";
+import { MultimediaCarousel } from "../ui/multimedia-carousel/multimedia-carousel";
 
 // Interfaces
 import { Skill } from "@/modules/skills/interfaces/skills";
@@ -90,7 +92,7 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
   const user = session?.user;
 
   const mode = experience ? Crud.UPDATE : Crud.CREATE;
-  const { id, ...rest } = experience || {};
+  const { id, multimedia, ...rest } = experience || {};
 
   const [state, formAction] = useActionState<ActionState<Experience>, FormData>(
     mode === Crud.CREATE ? create<Experience> : update<Experience>,
@@ -105,6 +107,7 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
   const defaultValues: Partial<z.infer<typeof experiencesSchema>> = {
     ...initialValues,
     ...rest,
+    multimedia: multimedia ? JSON.parse(JSON.stringify(multimedia)) : null,
   };
 
   const form = useForm<z.infer<typeof experiencesSchema>>({
@@ -114,15 +117,15 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
 
   const currentlyWorking = form.watch("currentlyWorking");
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     if (!user) return;
 
     const formData = new FormData();
     formData.append("id", id ?? "");
     formData.append("userId", user.id ?? "");
 
-    // Manejar las habilidades por separado
-    const { experienceSkills, ...rest } = data;
+    // Manejar multimedia por separado
+    const { multimedia, experienceSkills, ...rest } = data;
 
     // Agregar el resto de los datos
     Object.entries(rest).forEach(([key, value]) =>
@@ -131,6 +134,45 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
 
     // Agregar las habilidades como JSON
     formData.append("experienceSkills", JSON.stringify(experienceSkills || []));
+
+    // Verificar si hay cambios en multimedia
+    const hasMultimediaChanges =
+      mode === Crud.CREATE ||
+      JSON.stringify(multimedia) !== JSON.stringify(experience?.multimedia);
+
+    // Verificar si se están eliminando todos los archivos
+    const isDeletingAllFiles =
+      experience?.multimedia &&
+      Array.isArray(experience.multimedia) &&
+      experience.multimedia.length > 0 &&
+      (!multimedia || multimedia.length === 0);
+
+    // Agregar los archivos y sus metadatos
+    if (isDeletingAllFiles) {
+      // Si se están eliminando todos los archivos, enviar null explícitamente
+      formData.append("multimedia", "null");
+    } else if (multimedia?.length && hasMultimediaChanges) {
+      // Agregar el array de multimedia como JSON string
+      formData.append("multimedia", JSON.stringify(multimedia));
+
+      // Agregar los archivos físicos solo si son nuevos (tienen URL temporal)
+      for (const file of multimedia) {
+        if (file.url.startsWith("blob:") || file.url.includes("objecturl")) {
+          const response = await fetch(file.url);
+          const blob = await response.blob();
+          formData.append(
+            "files",
+            new File([blob], file.name, { type: file.type })
+          );
+        }
+      }
+    } else {
+      // Si no hay cambios, mantener la multimedia existente
+      formData.append(
+        "multimedia",
+        JSON.stringify(experience?.multimedia || null)
+      );
+    }
 
     startTransition(() => {
       formAction(formData);
@@ -493,9 +535,39 @@ const ExperiencesForm = ({ experience, skills }: Props) => {
               )}
             />
 
+            {/* Multimedia upload */}
+            <FormField
+              control={form.control}
+              name="multimedia"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Archivos multimedia</FormLabel>
+                  {field.value && field.value.length > 0 && (
+                    <MultimediaCarousel files={field.value} />
+                  )}
+                  <FormControl>
+                    <FileUpload
+                      onChange={field.onChange}
+                      value={field.value}
+                      disabled={!!state}
+                      maxFiles={5}
+                      accept={{
+                        "image/*": [".png", ".jpg", ".jpeg", ".gif"],
+                        "application/pdf": [".pdf"],
+                        "application/msword": [".doc"],
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                          [".docx"],
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="w-full flex justify-between">
               <div className="flex justify-start">
-                <SubmitButton text="Guardar" disabled={!!state} />
+                <SubmitButton text="Save" disabled={!!state} />
               </div>
 
               {experience && (

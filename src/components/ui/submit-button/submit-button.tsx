@@ -29,7 +29,7 @@ const SubmitButton = ({
       {pending && (
         <LoaderCircle size="14" className="animate-spin" color="white" />
       )}
-      {pending ? "Cargando..." : text}
+      {pending ? "Loading..." : text}
     </Button>
   );
 };
