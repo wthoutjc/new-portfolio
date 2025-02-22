@@ -48,3 +48,5 @@ export default function RootLayout({
 // TODO: Arreglar que el findAll de userSkill esta trayendo todos los datos y rompe la tabla
 // TODO: Implementar sincronización de archivos multimedia para las experiencias
 // TODO: Arreglar que signOut limpie la session del usuario
+// TODO: Gráfico de pastel roto
+// TODO: Crear componente de carrusel para multimedia []

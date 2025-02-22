@@ -17,6 +17,13 @@ import {
   BriefcaseIcon,
 } from "lucide-react";
 
+// Dayjs
+import dayjs from "dayjs";
+import "dayjs/locale/es";
+
+// Set locale
+dayjs.locale("es");
+
 interface TimelineProps {
   experiences: Experience[];
 }
@@ -75,10 +82,33 @@ export default function ExperienceTimeline({ experiences }: TimelineProps) {
                 </div>
                 <div className="text-sm flex items-center">
                   <CalendarIcon className="w-4 h-4 mr-1" />
-                  {new Date(experience.startDate).toLocaleDateString()} -
+                  {dayjs(experience.startDate).format("MMMM [de] YYYY")} -{" "}
                   {experience.endDate
-                    ? new Date(experience.endDate).toLocaleDateString()
-                    : "Present"}
+                    ? dayjs(experience.endDate).format("MMMM [de] YYYY")
+                    : "Presente"}{" "}
+                  ·{" "}
+                  {(() => {
+                    const startDate = dayjs(experience.startDate);
+                    const endDate = experience.endDate
+                      ? dayjs(experience.endDate)
+                      : dayjs();
+                    const months = endDate.diff(startDate, "month");
+                    const years = Math.floor(months / 12);
+                    const remainingMonths = months % 12;
+
+                    if (years === 0) {
+                      return `${remainingMonths} ${
+                        remainingMonths === 1 ? "mes" : "meses"
+                      }`;
+                    }
+                    return `${years} ${years === 1 ? "año" : "años"}${
+                      remainingMonths > 0
+                        ? ` ${remainingMonths} ${
+                            remainingMonths === 1 ? "mes" : "meses"
+                          }`
+                        : ""
+                    }`;
+                  })()}
                 </div>
                 {experience.location && (
                   <div className="text-sm flex items-center">
