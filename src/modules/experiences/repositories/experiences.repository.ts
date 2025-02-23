@@ -77,7 +77,6 @@ class ExperiencesRepository {
   create(createExperienceDto: CreateExperienceDto, userId: string) {
     const data: Prisma.ExperiencesCreateInput = {
       ...createExperienceDto,
-      multimedia: createExperienceDto.multimedia ?? Prisma.JsonNull,
       user: { connect: { id: userId } },
       experienceSkills: {
         create: (createExperienceDto.experienceSkills ?? []).map(
@@ -96,10 +95,6 @@ class ExperiencesRepository {
   update(id: string, updateExperienceDto: UpdateExperienceDto) {
     const data: Prisma.ExperiencesUpdateInput = {
       ...updateExperienceDto,
-      multimedia:
-        updateExperienceDto.multimedia === null
-          ? Prisma.JsonNull
-          : updateExperienceDto.multimedia,
       experienceSkills: {
         deleteMany: {},
         ...(updateExperienceDto.experienceSkills?.length

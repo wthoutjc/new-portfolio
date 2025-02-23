@@ -50,7 +50,7 @@ const AppFooter = () => {
             className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md
                    opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-blue-700"
           >
-            Iniciar sesión
+            Sign in
           </Link>
         </div>
       </div>

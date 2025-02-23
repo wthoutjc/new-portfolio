@@ -23,6 +23,16 @@ import {
 
 // Enums
 import { SkillLevel } from "@/lib/enums/skill.enum";
+import { SKILL_CATEGORIES } from "@/lib/constants/skill-categories";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface SkillsTimelineProps {
   userSkills: (UsersSkills & {
@@ -30,13 +40,47 @@ interface SkillsTimelineProps {
   })[];
 }
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
+const ELEGANT_COLORS = [
+  "#2E3B55", // Azul marino profundo
+  "#4A5568", // Gris azulado
+  "#553C9A", // Púrpura profundo
+  "#6B46C1", // Púrpura real
+  "#805AD5", // Púrpura medio
+  "#9F7AEA", // Lavanda
+  "#B794F4", // Lavanda claro
+  "#D6BCFA", // Púrpura suave
+  "#E9D8FD", // Lila
+  "#FAF5FF", // Lavanda muy claro
+];
 
 const levelNumberDict = {
   [SkillLevel.EXPERT]: 4,
   [SkillLevel.COMPETENT]: 3,
   [SkillLevel.BEGINNER]: 2,
   [SkillLevel.NO_EXPERIENCE]: 1,
+};
+
+const SENIORITY_COLORS = {
+  [SkillLevel.EXPERT]: {
+    bg: "bg-purple-100 dark:bg-purple-900/20",
+    text: "text-purple-800 dark:text-purple-200",
+    border: "border-purple-200 dark:border-purple-800",
+  },
+  [SkillLevel.COMPETENT]: {
+    bg: "bg-blue-100 dark:bg-blue-900/20",
+    text: "text-blue-800 dark:text-blue-200",
+    border: "border-blue-200 dark:border-blue-800",
+  },
+  [SkillLevel.BEGINNER]: {
+    bg: "bg-green-100 dark:bg-green-900/20",
+    text: "text-green-800 dark:text-green-200",
+    border: "border-green-200 dark:border-green-800",
+  },
+  [SkillLevel.NO_EXPERIENCE]: {
+    bg: "bg-gray-100 dark:bg-gray-900/20",
+    text: "text-gray-800 dark:text-gray-200",
+    border: "border-gray-200 dark:border-gray-800",
+  },
 };
 
 export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
@@ -53,16 +97,53 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
     .sort((a, b) => b.years - a.years)
     .slice(0, 10);
 
-  const pieData = userSkills.reduce((acc, userSkill) => {
-    const source = userSkill.source;
-    const existingSource = acc.find((item) => item.name === source);
-    if (existingSource) {
-      existingSource.value++;
-    } else {
-      acc.push({ name: source, value: 1 });
+  const pieData = userSkills
+    .reduce((acc, userSkill) => {
+      // Encontrar la categoría a la que pertenece la habilidad
+      const foundCategory = Object.entries(SKILL_CATEGORIES).find(
+        ([, category]) =>
+          category.skills.some(
+            (skill) =>
+              skill.toLowerCase() === userSkill.skill.name.toLowerCase() ||
+              userSkill.skill.name.toLowerCase().includes(skill.toLowerCase())
+          )
+      );
+
+      const categoryName = foundCategory
+        ? SKILL_CATEGORIES[foundCategory[0] as keyof typeof SKILL_CATEGORIES]
+            .name
+        : "Otros";
+
+      const existingCategory = acc.find((item) => item.name === categoryName);
+      if (existingCategory) {
+        existingCategory.value++;
+      } else {
+        acc.push({ name: categoryName, value: 1 });
+      }
+      return acc;
+    }, [] as { name: string; value: number }[])
+    .sort((a, b) => b.value - a.value);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState<string>("all");
+
+  // Agrupar habilidades por nivel
+  const groupedSkills = userSkills.reduce((acc, skill) => {
+    if (!acc[skill.level]) {
+      acc[skill.level] = [];
     }
+    acc[skill.level].push(skill);
     return acc;
-  }, [] as { name: string; value: number }[]);
+  }, {} as Record<SkillLevel, typeof userSkills>);
+
+  // Filtrar habilidades
+  const filterSkills = (skills: typeof userSkills) => {
+    return skills.filter(
+      (skill) =>
+        skill.skill.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (selectedLevel === "all" || skill.level === selectedLevel)
+    );
+  };
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -80,9 +161,9 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
                 <Radar
                   name="Skill Level"
                   dataKey="level"
-                  stroke="#8884d8"
-                  fill="#8884d8"
-                  fillOpacity={0.6}
+                  stroke={ELEGANT_COLORS[2]}
+                  fill={ELEGANT_COLORS[2]}
+                  fillOpacity={0.4}
                 />
               </RadarChart>
             </ResponsiveContainer>
@@ -107,7 +188,14 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
                 />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="years" fill="#8884d8" />
+                <Bar dataKey="years" background={{ fill: "#000" }}>
+                  {barData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={ELEGANT_COLORS[index % ELEGANT_COLORS.length]}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -116,7 +204,7 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Skills by Source</CardTitle>
+          <CardTitle>Distribution of Skills by Area</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-[300px] sm:h-[400px]">
@@ -126,22 +214,26 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  labelLine={false}
+                  labelLine
                   outerRadius="80%"
-                  fill="#8884d8"
+                  innerRadius="40%"
+                  paddingAngle={2}
                   dataKey="value"
-                  label={({ name, percent }) =>
-                    `${name} ${(percent * 100).toFixed(0)}%`
+                  label={({ name, value, percent }) =>
+                    `${name}: ${value} (${(percent * 100).toFixed(0)}%)`
                   }
                 >
-                  {pieData.map((entry, index) => (
+                  {pieData.map((_, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
+                      fill={ELEGANT_COLORS[index % ELEGANT_COLORS.length]}
                     />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip
+                  formatter={(value, name) => [`${value} habilidades`, name]}
+                />
+                <Legend />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -150,21 +242,60 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
 
       <Card className="col-span-full">
         <CardHeader>
-          <CardTitle>All Skills</CardTitle>
+          <CardTitle>Todas las Habilidades</CardTitle>
+          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <div className="flex-1">
+              <Input
+                placeholder="Buscar habilidad..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full"
+              />
+            </div>
+            <Select
+              value={selectedLevel}
+              onValueChange={(value) => setSelectedLevel(value)}
+            >
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Filtrar por nivel" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos los niveles</SelectItem>
+                {Object.values(SkillLevel).map((level) => (
+                  <SelectItem key={level} value={level}>
+                    {level}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {userSkills.map((userSkill) => (
-              <Badge
-                key={userSkill.id}
-                variant="secondary"
-                className="text-xs sm:text-sm mb-2"
-              >
-                {userSkill.skill.name} - {userSkill.level} (
-                {userSkill.yearsOfExperience} years)
-              </Badge>
-            ))}
-          </div>
+          {Object.entries(groupedSkills).map(([level, skills]) => {
+            const filteredSkills = filterSkills(skills);
+            if (filteredSkills.length === 0) return null;
+
+            return (
+              <div key={level} className="mb-6 last:mb-0">
+                <h3 className="text-lg font-semibold mb-3">{level}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {filteredSkills.map((skill) => (
+                    <Badge
+                      key={skill.id}
+                      variant="secondary"
+                      className={`text-xs sm:text-sm mb-2 border ${
+                        SENIORITY_COLORS[skill.level].bg
+                      } ${SENIORITY_COLORS[skill.level].text} ${
+                        SENIORITY_COLORS[skill.level].border
+                      }`}
+                    >
+                      {skill.skill.name} ({skill.yearsOfExperience} años)
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </CardContent>
       </Card>
     </div>

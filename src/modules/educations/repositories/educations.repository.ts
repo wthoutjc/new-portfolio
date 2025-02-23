@@ -79,7 +79,6 @@ class EducationsRepository {
   create(createEducationDto: CreateEducationDto, userId: string) {
     const data: Prisma.EducationsCreateInput = {
       ...createEducationDto,
-      multimedia: createEducationDto.multimedia ?? Prisma.JsonNull,
       user: { connect: { id: userId } },
     };
 
@@ -91,10 +90,6 @@ class EducationsRepository {
   update(id: string, updateEducationDto: UpdateEducationDto) {
     const data: Prisma.EducationsUpdateInput = {
       ...updateEducationDto,
-      multimedia:
-        updateEducationDto.multimedia === null
-          ? Prisma.JsonNull
-          : updateEducationDto.multimedia,
     };
 
     return this.dbService.educations.update({

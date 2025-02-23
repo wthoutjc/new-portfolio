@@ -18,10 +18,20 @@ export default async function SystemExperiencePage({ params }: Props) {
   const experience = await experiencesService.findOne(id);
   if (!experience) return <Error message="Experiencia no encontrada" />;
 
+  const transformedExperience = {
+    ...experience,
+    multimedia: experience.multimedia.map((m) => ({
+      ...m,
+      deletedAt: m.deletedAt?.toISOString() || null,
+      createdAt: m.createdAt.toISOString(),
+      updatedAt: m.updatedAt.toISOString(),
+    })),
+  };
+
   const { data: skills } = await skillsService.findAll({
     page: 1,
     take: 100,
   });
 
-  return <ExperiencesForm skills={skills} experience={experience} />;
+  return <ExperiencesForm skills={skills} experience={transformedExperience} />;
 }
