@@ -289,7 +289,7 @@ export default function SkillsTimeline({ userSkills }: SkillsTimelineProps) {
                         SENIORITY_COLORS[skill.level].border
                       }`}
                     >
-                      {skill.skill.name} ({skill.yearsOfExperience} años)
+                      {skill.skill.name} ({skill.yearsOfExperience} years)
                     </Badge>
                   ))}
                 </div>

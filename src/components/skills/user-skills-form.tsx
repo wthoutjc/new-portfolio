@@ -251,7 +251,7 @@ const UserSkillsForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Años de experiencia <span className="text-red-500">*</span>
+                    Years of Experience <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -274,7 +274,7 @@ const UserSkillsForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Fuente <span className="text-red-500">*</span>
+                    Source <span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -283,7 +283,7 @@ const UserSkillsForm = ({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Seleccione una fuente" />
+                        <SelectValue placeholder="Select a source" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

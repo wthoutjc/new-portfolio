@@ -95,13 +95,13 @@ export default function ExperienceTimeline({ experiences }: TimelineProps) {
 
                     if (years === 0) {
                       return `${remainingMonths} ${
-                        remainingMonths === 1 ? "mes" : "meses"
+                        remainingMonths === 1 ? "month" : "months"
                       }`;
                     }
-                    return `${years} ${years === 1 ? "año" : "años"}${
+                    return `${years} ${years === 1 ? "year" : "years"}${
                       remainingMonths > 0
                         ? ` ${remainingMonths} ${
-                            remainingMonths === 1 ? "mes" : "meses"
+                            remainingMonths === 1 ? "month" : "months"
                           }`
                         : ""
                     }`;

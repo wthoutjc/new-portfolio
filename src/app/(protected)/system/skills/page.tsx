@@ -8,15 +8,15 @@ import { auth } from "@/auth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const USER_SKILL_DICT = {
-  "skill.name": "Habilidad",
-  level: "Nivel",
-  source: "Fuente",
-  yearsOfExperience: "Años de experiencia",
+  "skill.name": "Skill",
+  level: "Level",
+  source: "Source",
+  yearsOfExperience: "Years of Experience",
 };
 
 const SKILL_DICT = {
-  name: "Habilidad",
-  icon: "Icono",
+  name: "Skill",
+  icon: "Icon",
 };
 
 interface Props {
