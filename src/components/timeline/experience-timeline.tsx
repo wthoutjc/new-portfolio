@@ -23,9 +23,6 @@ import dayjs from "dayjs";
 import "dayjs/locale/es";
 import { MultimediaFile } from "@/lib/interfaces/multimedia";
 
-// Set locale
-dayjs.locale("es");
-
 interface TimelineProps {
   experiences: Experience[];
 }
@@ -79,10 +76,10 @@ export default function ExperienceTimeline({ experiences }: TimelineProps) {
                 </div>
                 <div className="text-sm flex items-center">
                   <CalendarIcon className="w-4 h-4 mr-1" />
-                  {dayjs(experience.startDate).format("MMMM [de] YYYY")} -{" "}
+                  {dayjs(experience.startDate).format("MMMM YYYY")} -{" "}
                   {experience.endDate
-                    ? dayjs(experience.endDate).format("MMMM [de] YYYY")
-                    : "Presente"}{" "}
+                    ? dayjs(experience.endDate).format("MMMM YYYY")
+                    : "Present"}{" "}
                   ·{" "}
                   {(() => {
                     const startDate = dayjs(experience.startDate);
