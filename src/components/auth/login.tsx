@@ -2,6 +2,7 @@
 import { useState, useActionState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 // NextAuth
 import { signIn } from "@/lib/actions/auth.action";
@@ -26,6 +27,17 @@ import { SubmitButton } from "../ui/submit-button/submit-button";
 const Login = () => {
   const [show, setShow] = useState(false);
   const [state, action] = useActionState(signIn, undefined);
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+
+  const getErrorMessage = (errorType: string | null) => {
+    switch (errorType) {
+      case "CredentialsSignin":
+        return "Invalid username or password";
+      default:
+        return "An error occurred during authentication";
+    }
+  };
 
   return (
     <Card className="w-[350px]">
@@ -98,6 +110,18 @@ const Login = () => {
                     <li key={error}>* {error}</li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {error && (
+              <div className="text-xs text-red-500">
+                <p>{getErrorMessage(error)}</p>
+              </div>
+            )}
+
+            {state?.message && (
+              <div className="text-xs text-red-500">
+                <p>{state.message}</p>
               </div>
             )}
           </div>
